@@ -1,0 +1,11 @@
+{
+  "name": "cu-atlas",
+  "private": true,
+  "workspaces": ["apps/*"],
+  "scripts": {
+    "start": "concurrently --raw --kill-others \"npm run start --workspace=apps/mobile\" \"npm run start --workspace=apps/api\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.0"
+  }
+}

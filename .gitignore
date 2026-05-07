@@ -1,0 +1,42 @@
+# Node Modules
+node_modules/
+
+# Expo/React Native
+.expo/
+dist/
+web-build/
+apps/mobile/expo-env.d.ts
+
+# Metro
+.metro-health-check*
+
+# Native artifacts
+.kotlin/
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+
+# Logs
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# OS
+.DS_Store
+
+# Environment
+.env*
+
+# TypeScript
+*.tsbuildinfo
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Generated native folders
+apps/mobile/ios
+apps/mobile/android

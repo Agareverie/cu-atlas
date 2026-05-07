@@ -1,0 +1,10 @@
+{
+  "editor.formatOnSave": true,
+  
+  "python.terminal.activateEnvironment": true,
+  
+  "python.defaultInterpreterPath": "apps/api/.venv/bin/python",
+  "[windows]": {
+    "python.defaultInterpreterPath": "apps/api/.venv/Scripts/python.exe"
+  }
+}

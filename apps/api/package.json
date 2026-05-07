@@ -1,0 +1,7 @@
+{
+  "name": "@cu-atlas/api",
+  "version": "1.0.0",
+  "scripts": {
+    "start": ". .venv/bin/activate && python app.py"
+  }
+}

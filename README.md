@@ -16,7 +16,7 @@
 - Python 3.14.2
 - Visual Studio Code (Recommended)
 
-P.S Might revert to an older version depending on how Python and Node are installed. (Since I'm using the homebrew versions right now which auto-updates to the latest, and not a proper version manager)
+P.S Since I'm using the homebrew installs right now **which uncontrollably auto-updates to the latest version of node and python**, and not a proper version manager, the versions might be reverted into older ones in a later branch to prevent bugs.
 
 #### Android Dependencies
 
@@ -77,13 +77,18 @@ pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-Then, for VS code users, Select the Python Interpreter and choose "Use Python from `python.defaultInterpeterPath` setting" to make the language server lint properly.
+Then, for VS code users, Select the Python Interpreter and choose "Use Python from `python.defaultInterpreterPath` setting" to make the language server lint properly.
 
 To open and start the application, use `npm run start` on each of the workspaces.
 
 ```bash
-npm run start --woekspace=apps/mobile  # Opens only mobile app
-npm run start --package=apps/api  # Opens only API
+npm run start --workspace=apps/mobile  # Opens only mobile app
+npm run start --workspace=apps/api  # Opens only API
+```
+
+A script has been added into the root's package.json allowing one to run both instances at the same time.
+
+```bash
 npm run start   # Opens both at the same time (Recommended)
 ```
 

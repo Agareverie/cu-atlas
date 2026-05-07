@@ -32,7 +32,19 @@ The current scope of the application is a mobile application that can run on And
 - Android Studio IDE (For Android SDK)
 - A mobile phone set in Android Studio's device manager (Tested on Pixel 8)
 
-### Setting up the Shell (MacOS)
+### Setting up (MacOS)
+
+Install `fnm` and `pyenv` using `brew`.
+
+```bash
+brew install fnm pyenv
+```
+
+`pyenv` also requires a few build dependencies, also installable from `brew`.
+
+```bash
+brew install openssl readline sqlite3 xz tcl-tk@8 libb2 zstd zlib pkgconfig
+```
 
 Ensure you have these lines of code in your `~/.zshrc`.
 

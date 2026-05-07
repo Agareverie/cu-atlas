@@ -2,65 +2,106 @@
 
 (Insert rook mascot photo here)
 
-**Group Members**:
+Ever wonder where that building you have to go for your General Education course is? Well, this is the app for you!
+
+## Group Members
 
 1. Yanathep Prasitsomsakul
 2. Syeda Raza
 
-## Development
+## Technology Stack
+
+The application has a TypeScript frontend with `Expo` along with a Python Backend using `Flask` and `MongoDB`.
+
+- **Node.js** v22.22.2 (LTS)
+- **Expo** SDK 54
+- **Python** 3.13.13
+- **Flask** 3.1.3
+- (MongoDB integration not added yet)
+- (Docker not added yet)
+
+### Scope
+
+The current scope of the application is a mobile application that can run on Android devices.
 
 ### Dependencies
 
-- Node.js 25.8.0
-- NPM 11.11.0
-- Python 3.14.2
+- A version manager for **Node.js** (Tested on `fnm`)
+- A version manager for **Python** (Tested on `pyenv`)
 - Visual Studio Code (Recommended)
+- Android Studio IDE (For Android SDK)
+- A mobile phone set in Android Studio's device manager (Tested on Pixel 8)
 
-P.S Since I'm using the homebrew installs right now **which uncontrollably auto-updates to the latest version of node and python**, and not a proper version manager, the versions might be reverted into older ones in a later branch to prevent bugs.
+### Setting up the Shell (MacOS)
 
-#### Android Dependencies
-
-- Android Studio application
-- A mobile phone set in Android Studio's device manager (Test device is Pixel 8)
-
-After installing Android Studio, ensure that the `adb` command works. `adb` is the Android Development Bridge that allows Expo to connect and open the Android emulator.
+Ensure you have these lines of code in your `~/.zshrc`.
 
 ```bash
-adb devices
-```
+# fnm (node.js)
+eval "$(fnm env --use-on-cd --version-file-strategy=recursive --shell zsh)"
 
-If it says `adb: command not found` or similar, then `adb` and other android utilities are not in the system's environment variables.
+# pyenv (python)
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init - zsh)"
 
-#### System Environment Variables (MacOS and Linux)
-
-If you are on MacOS or Linux, add this to your `.bashrc` or `.zshrc`.
-
-```bash
-export ANDROID_HOME=$HOME/Library/Android/sdk  # Or where the android SDK is installed
+# Android/Android Studio
+export ANDROID_HOME=$HOME/Library/Android/sdk
 export ANDROID_SDK_ROOT=$ANDROID_HOME
 export PATH=$ANDROID_HOME/platform-tools:$PATH
 export PATH=$ANDROID_HOME/emulator:$PATH
 ```
 
-Then reset the file.
+Then restart the terminal.
 
 ```bash
-source .zshrc  # or .bashrc
+source .zshrc
 ```
 
-#### System Environment Variables (Windows)
+## Installation
 
-Find the location of the android SDK, then edit the path by going to the System Environment Variables and setting it up in the GUI.
+### Cloning
 
-### Installation
+First go to a directory where you want the project to be in, then `git clone` the repository.
 
-After `git clone`ing the project, first install the dependencies necessary with `npm`.
+```bash
+git clone https://github.com/Agareverie/cu-atlas.git
+```
+
+Open the `cu-atlas` folder in Visual Studio Code, then install the recommended extensions from `extensions.json`.
+
+### Installing Language Versions
+
+After cloning, use `fnm` and `pyenv` respectively to install the correct Node.js and Python versions for the project.
+
+```bash
+# fnm
+fnm install
+fnm use
+
+# pyenv
+pyenv install 3.13.13
+pyenv local 3.13.13
+```
+
+After installing their respective versions, check if those versions are the ones being used.
+
+```bash
+node --version  # Should show v22.22.2
+python --version  # Should show 3.13.13 (NOTE: pyenv uses python for everything, not python3)
+```
+
+If not, try restarting the shell and trying again.
+
+### Installing Dependencies
+
+Install the dependencies necessary with `npm`. This should install the dependencies for the repository and also everything in the expo app.
 
 ```bash
 npm install
 ```
 
-This should install the dependencies for the monorepo and also everything in the react native app. Then go to the api app directory.
+Then, go to the api app directory.
 
 ```bash
 cd apps/api
@@ -69,15 +110,14 @@ cd apps/api
 Create a virtual environment with python, and then install the dependencies as stated in requirements.txt. A cross-platform setup script will be created later to simplify this.
 
 ```bash
-python3 -m venv .venv
+python -m venv .venv
 source .venv/bin/activate  # MacOS/Linux
 # or .venv\Scripts\activate  # Windows
 
-pip install --upgrade pip
-pip install -r requirements.txt
+pip install -r requirements.txt  # Includes flask, flask-cors, etc.
 ```
 
-Then, for VS code users, Select the Python Interpreter and choose "Use Python from `python.defaultInterpreterPath` setting" to make the language server lint properly.
+Then, for VS code users, select the Python Interpreter (CTRL/CMD+SHIFT+P then `Python: Select Interpreter`) and choose "Use Python from `python.defaultInterpreterPath` setting" to make the language server lint properly.
 
 To open and start the application, use `npm run start` on each of the workspaces.
 
@@ -86,10 +126,10 @@ npm run start --workspace=apps/mobile  # Opens only mobile app
 npm run start --workspace=apps/api  # Opens only API
 ```
 
-A script has been added into the root's package.json allowing one to run both instances at the same time.
+A script has been added into the root's `package.json` allowing one to run both instances at the same time.
 
 ```bash
-npm run start   # Opens both at the same time (Recommended)
+npm run start  # Opens both at the same time (Recommended)
 ```
 
 Once the mobile app is open, the Expo CLI will pop up showing the controls. Press `a` to open the android emulator. iOS is not tested. The API can also be accessed by going to `http://127.0.0.1:3000`. Press CTRL+C to close both processes.

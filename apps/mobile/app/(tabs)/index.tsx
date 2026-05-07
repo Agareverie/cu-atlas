@@ -6,8 +6,18 @@ import ParallaxScrollView from '@/components/parallax-scroll-view';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Link } from 'expo-router';
+import { useEffect, useState } from 'react';
 
 export default function HomeScreen() {
+  const [message, setMessage] = useState("loading...");
+
+  useEffect(() => {
+    fetch("http://10.0.2.2:3000")
+      .then(res => res.json())
+      .then(data => setMessage(data.message))
+      .catch(err => setMessage("error: " + err.message));
+  }, []);
+
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
@@ -18,7 +28,7 @@ export default function HomeScreen() {
         />
       }>
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
+        <ThemedText type="title">{message}</ThemedText>
         <HelloWave />
       </ThemedView>
       <ThemedView style={styles.stepContainer}>

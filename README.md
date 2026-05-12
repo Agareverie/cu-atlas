@@ -6,8 +6,8 @@ Ever wonder where that building you have to go for your General Education course
 
 ## Group Members
 
-1. Yanathep Prasitsomsakul
-2. Syeda Raza
+1. Yanathep Prasitsomsakul 6738067321
+2. Syeda Azmathunnisa Raza 6738060921
 
 ## Technology Stack
 

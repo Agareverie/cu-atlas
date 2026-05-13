@@ -131,7 +131,13 @@ pip install -r requirements.txt  # Includes flask, flask-cors, etc.
 
 Then, for VS code users, select the Python Interpreter (CTRL/CMD+SHIFT+P then `Python: Select Interpreter`) and choose "Use Python from `python.defaultInterpreterPath` setting" to make the language server lint properly.
 
-To open and start the application, use `npm run start` on each of the workspaces.
+Then seed the database.
+
+```bash
+python seed.py
+```
+
+Go back to the root directory (`cd ../..`). Then to open and start the application, use `npm run start` on each of the workspaces.
 
 ```bash
 npm run start --workspace=apps/mobile  # Opens only mobile app

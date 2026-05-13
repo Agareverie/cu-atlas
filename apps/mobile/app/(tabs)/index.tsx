@@ -1,21 +1,35 @@
 import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 import { HelloWave } from '@/components/hello-wave';
 import ParallaxScrollView from '@/components/parallax-scroll-view';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
 import { useEffect, useState } from 'react';
+import { Collapsible } from '@/components/ui/collapsible';
 
 export default function HomeScreen() {
   const [message, setMessage] = useState("loading...");
+  const [buildings, setBuildings] = useState<{
+    _id: string,
+    code: string,
+    name_en: string,
+    name_th: string,
+    pronunciation_th: string,
+    faculty: string,
+  }[]>([]);
 
   useEffect(() => {
-    fetch("http://10.0.2.2:3000")
+    fetch("http://10.0.2.2:3000/buildings")
       .then(res => res.json())
-      .then(data => setMessage(data.message))
-      .catch(err => setMessage("error: " + err.message));
+      .then(data => {
+        setMessage(data.message);
+        setBuildings(data.buildings);
+      })
+      .catch(err => {
+        setMessage("error: " + err.message);
+        setBuildings([]);
+      });
   }, []);
 
   return (
@@ -31,59 +45,22 @@ export default function HomeScreen() {
         <ThemedText type="title">{message}</ThemedText>
         <HelloWave />
       </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
+      {buildings.map((building) => (
+        <Collapsible key={building._id} title={building.code}>
         <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
+          English Name: {building.name_en}
         </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
-
         <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
+          Thai Name: {building.name_th}
         </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
         <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
+          Pronunciation: {building.pronunciation_th}
         </ThemedText>
-      </ThemedView>
+        <ThemedText>
+          Faculty: {building.faculty}
+        </ThemedText>
+      </Collapsible>
+      ))}
     </ParallaxScrollView>
   );
 }

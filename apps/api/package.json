@@ -2,6 +2,7 @@
   "name": "@cu-atlas/api",
   "version": "1.0.0",
   "scripts": {
+    "seed": ". .venv/bin/activate && python seed.py",
     "start": ". .venv/bin/activate && python app.py"
   }
 }

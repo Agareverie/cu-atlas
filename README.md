@@ -17,8 +17,7 @@ The application has a TypeScript frontend with `Expo` along with a Python Backen
 - **Expo** SDK 54
 - **Python** 3.13.13
 - **Flask** 3.1.3
-- (MongoDB integration not added yet)
-- (Docker not added yet)
+- **MongoDB** 8
 
 ### Scope
 
@@ -28,6 +27,7 @@ The current scope of the application is a mobile application that can run on And
 
 - A version manager for **Node.js** (Tested on `fnm`)
 - A version manager for **Python** (Tested on `pyenv`)
+- Docker Desktop
 - Visual Studio Code (Recommended)
 - Android Studio IDE (For Android SDK)
 - A mobile phone set in Android Studio's device manager (Tested on Pixel 8)
@@ -131,13 +131,19 @@ pip install -r requirements.txt  # Includes flask, flask-cors, etc.
 
 Then, for VS code users, select the Python Interpreter (CTRL/CMD+SHIFT+P then `Python: Select Interpreter`) and choose "Use Python from `python.defaultInterpreterPath` setting" to make the language server lint properly.
 
+Go back to the root directory (`cd ../..`). And install/activate `mongodb` using docker-compose
+
+```bash
+docker compose up -d
+```
+
 Then seed the database.
 
 ```bash
-python seed.py
+npm run seed --workspace=apps/api
 ```
 
-Go back to the root directory (`cd ../..`). Then to open and start the application, use `npm run start` on each of the workspaces.
+To open and start the application, use `npm run start` on each of the workspaces.
 
 ```bash
 npm run start --workspace=apps/mobile  # Opens only mobile app

@@ -28,10 +28,7 @@ export default function HomeScreen() {
         setMessage(data.message);
         setBuildings(data.buildings);
       })
-      .catch((err) => {
-        setMessage("error: " + err.message);
-        setBuildings([]);
-      });
+      .catch(console.error);
   }, []);
 
   return (

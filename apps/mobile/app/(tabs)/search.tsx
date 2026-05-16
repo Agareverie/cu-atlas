@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
 
   title: {
     color: COLORS.primary,
-    ...(screenWidth > 700 ? TYPOGRAPHY.heroLarge : TYPOGRAPHY.hero),
+    ...TYPOGRAPHY.hero,
   },
 
   subtitle: {

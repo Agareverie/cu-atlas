@@ -94,9 +94,7 @@ const styles = StyleSheet.create({
   heading: {
     color: COLORS.primary,
     marginBottom: 8,
-    fontSize: TYPOGRAPHY.h1.fontSize,
-    fontWeight: TYPOGRAPHY.h1.fontWeight,
-    lineHeight: TYPOGRAPHY.h1.lineHeight,
+    ...TYPOGRAPHY.hero,
   },
 
   card: {

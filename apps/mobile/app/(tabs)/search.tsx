@@ -10,7 +10,7 @@ import {
   Platform,
 } from "react-native";
 
-import { Ionicons } from "@expo/vector-icons";
+import { IconSymbol } from "@/components/ui/icon-symbol";
 
 const COLORS = {
   primary: "#111827",
@@ -74,7 +74,7 @@ export default function SearchScreen() {
 
       <View style={styles.searchCard}>
         <View style={styles.searchRow}>
-          <Ionicons name="search" size={22} color="#6b7280" />
+          <IconSymbol name="magnifyingglass" size={22} color="#6b7280"/>
 
           <TextInput
             placeholder="Search building, faculty or abbreviation"

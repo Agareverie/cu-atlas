@@ -10,7 +10,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 
-import { Ionicons } from "@expo/vector-icons";
+import { IconSymbol } from "@/components/ui/icon-symbol";
 
 const COLORS = {
   primary: "#111827",
@@ -106,7 +106,7 @@ export default function PopBusScreen() {
 
       <View style={styles.searchCard}>
         <View style={styles.inputGroup}>
-          <Ionicons name="location" size={20} color="#ef4444" />
+          <IconSymbol name="pin" size={20} color="#ef4444" />
 
           <TextInput
             placeholder="From"
@@ -117,7 +117,7 @@ export default function PopBusScreen() {
         </View>
 
         <View style={styles.inputGroup}>
-          <Ionicons name="flag" size={20} color="#3b82f6" />
+        <IconSymbol name="flag" size={20} color="#3b82f6" />
 
           <TextInput
             placeholder="To"
@@ -140,7 +140,7 @@ export default function PopBusScreen() {
         <ActivityIndicator size="large" color="#111827" />
       ) : results.length === 0 ? (
         <View style={styles.emptyCard}>
-          <Ionicons name="bus" size={55} color="#d1d5db" />
+          <IconSymbol name="bus" size={55} color="#d1d5db" />
 
           <Text style={styles.emptyText}>Search routes to begin</Text>
         </View>

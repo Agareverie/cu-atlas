@@ -25,6 +25,8 @@ const MAPPING = {
   map: "map",
   magnifyingglass: "search",
   bus: "directions-bus",
+  pin: "location-pin",
+  flag: "flag",
 } as IconMapping;
 
 /**

@@ -16,7 +16,7 @@ type Building = {
 const FACULTY_COLOR_RGB: Record<string, number[]> = {
   Engineering: [164, 49, 42], // Firebrick
   Arts: [128, 128, 128], // Grey
-  Science: [255, 255, 85], // Yellow
+  Science: [206, 191, 26], // Yellow
   Architecture: [152, 53, 48], // Brown
   Economics: [249, 217, 73], // Gold
   "Political Science": [0, 0, 0], // Black

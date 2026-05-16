@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import {
   View,
@@ -6,7 +6,6 @@ import {
   StyleSheet,
   TextInput,
   ScrollView,
-  TouchableOpacity,
   Dimensions,
 } from 'react-native';
 
@@ -25,47 +24,32 @@ const screenWidth = Dimensions.get('window').width;
 export default function SearchScreen() {
 
   const [search, setSearch] = useState('');
+  const [buildings, setBuildings] = useState<{
+    _id: string,
+    code: string,
+    name_en: string,
+    name_th: string,
+    pronunciation_th: string,
+    faculty: string,
+  }[]>([]);
 
-  const buildings = [
+  useEffect(() => {
+    fetch("http://10.0.2.2:3000/buildings")
+      .then(res => res.json())
+      .then(data => {
+        setBuildings(data.buildings);
+      })
+      .catch(err => {
+        setBuildings([]);
+      });
+  }, []);
 
-    {
-      code: 'BRK',
-      name: 'Boromrajakumari Building',
-      faculty: 'Faculty of Arts',
-    },
-
-    {
-      code: 'ENG 1',
-      name: 'Engineering Building 1',
-      faculty: 'Faculty of Engineering',
-    },
-
-    {
-      code: 'CHALE',
-      name: 'Chaloem Rajakumari Building',
-      faculty: 'Communication Arts',
-    },
-
-    {
-      code: 'MTBLD',
-      name: 'Mahit Building',
-      faculty: 'Faculty of Medicine',
-    },
-
-    {
-      code: 'SCI',
-      name: 'Science Building',
-      faculty: 'Faculty of Science',
-    },
-
-  ];
-
-  const filtered = buildings.filter((building) =>
-
+  const filtered = search.trim() === ""
+    ? []
+    : buildings.filter((building) =>
     building.code.toLowerCase().includes(search.toLowerCase()) ||
-
-    building.name.toLowerCase().includes(search.toLowerCase())
-
+    building.faculty.toLowerCase().includes(search.toLowerCase()) ||
+    building.name_en.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
@@ -102,7 +86,7 @@ export default function SearchScreen() {
           />
 
           <TextInput
-            placeholder='Search building or abbreviation'
+            placeholder='Search building, faculty or abbreviation'
             value={search}
             onChangeText={setSearch}
             style={styles.input}
@@ -113,21 +97,15 @@ export default function SearchScreen() {
       </View>
 
       {/* RESULTS */}
-
       <Text style={styles.sectionTitle}>
         Buildings
       </Text>
 
       {filtered.map((building, index) => (
 
-        <TouchableOpacity
+        <View
           key={index}
           style={styles.card}
-          onPress={() => {
-            alert(
-              `${building.name}\n\n${building.faculty}`
-            );
-          }}
         >
 
           <View style={styles.codeBox}>
@@ -141,7 +119,7 @@ export default function SearchScreen() {
           <View style={{ flex: 1 }}>
 
             <Text style={styles.buildingName}>
-              {building.name}
+              {building.name_en}
             </Text>
 
             <Text style={styles.faculty}>
@@ -149,14 +127,7 @@ export default function SearchScreen() {
             </Text>
 
           </View>
-
-          <Ionicons
-            name='chevron-forward'
-            size={22}
-            color='#9ca3af'
-          />
-
-        </TouchableOpacity>
+        </View>
 
       ))}
 

@@ -5,12 +5,30 @@ import MapView, { Marker, Polygon } from "react-native-maps";
 type Building = {
   code: string;
   name_en: string;
-
+  faculty: string;
   geometry: {
     type: "Polygon";
 
     coordinates: number[][][];
   };
+};
+
+const FACULTY_COLOR_RGB: Record<string, number[]> = {
+  Arts: [128, 128, 128], // Grey
+  Engineering: [164, 49, 42], // Firebrick
+  Other: [245, 194, 203], // Pink
+};
+
+const facultyFillColor = (building: Building) => {
+  const rgbArray =
+    FACULTY_COLOR_RGB[building.faculty] ?? FACULTY_COLOR_RGB["Other"];
+  return `rgba(${rgbArray[0]}, ${rgbArray[1]}, ${rgbArray[2]}, 0.25)`;
+};
+
+const facultyStrokeColor = (building: Building) => {
+  const rgbArray =
+    FACULTY_COLOR_RGB[building.faculty] ?? FACULTY_COLOR_RGB["Other"];
+  return `rgb(${rgbArray[0]}, ${rgbArray[1]}, ${rgbArray[2]})`;
 };
 
 export default function MapPage() {
@@ -68,8 +86,8 @@ export default function MapPage() {
           <View key={`${building.code}-view`}>
             <Polygon
               key={`${building.code}-polygon`}
-              fillColor="rgba(0, 120, 255, 0.25)"
-              strokeColor="#0078ff"
+              fillColor={facultyFillColor(building)}
+              strokeColor={facultyStrokeColor(building)}
               strokeWidth={2}
               coordinates={coordinates}
             />

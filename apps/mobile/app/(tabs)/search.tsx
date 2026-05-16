@@ -1,112 +1,267 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
 
-import { Collapsible } from '@/components/ui/collapsible';
-import { ExternalLink } from '@/components/external-link';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Fonts } from '@/constants/theme';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  ScrollView,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native';
 
-export default function TabTwoScreen() {
-  return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
-      headerImage={
-        <IconSymbol
-          size={310}
-          color="#808080"
-          name="chevron.left.forwardslash.chevron.right"
-          style={styles.headerImage}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText
-          type="title"
-          style={{
-            fontFamily: Fonts.rounded,
-          }}>
-          Explore
-        </ThemedText>
-      </ThemedView>
-      <ThemedText>This app includes example code to help you get started.</ThemedText>
-      <Collapsible title="File-based routing">
-        <ThemedText>
-          This app has two screens:{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/explore.tsx</ThemedText>
-        </ThemedText>
-        <ThemedText>
-          The layout file in <ThemedText type="defaultSemiBold">app/(tabs)/_layout.tsx</ThemedText>{' '}
-          sets up the tab navigator.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/router/introduction">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Android, iOS, and web support">
-        <ThemedText>
-          You can open this project on Android, iOS, and the web. To open the web version, press{' '}
-          <ThemedText type="defaultSemiBold">w</ThemedText> in the terminal running this project.
-        </ThemedText>
-      </Collapsible>
-      <Collapsible title="Images">
-        <ThemedText>
-          For static images, you can use the <ThemedText type="defaultSemiBold">@2x</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">@3x</ThemedText> suffixes to provide files for
-          different screen densities
-        </ThemedText>
-        <Image
-          source={require('@/assets/images/react-logo.png')}
-          style={{ width: 100, height: 100, alignSelf: 'center' }}
-        />
-        <ExternalLink href="https://reactnative.dev/docs/images">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Light and dark mode components">
-        <ThemedText>
-          This template has light and dark mode support. The{' '}
-          <ThemedText type="defaultSemiBold">useColorScheme()</ThemedText> hook lets you inspect
-          what the user&apos;s current color scheme is, and so you can adjust UI colors accordingly.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/develop/user-interface/color-themes/">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Animations">
-        <ThemedText>
-          This template includes an example of an animated component. The{' '}
-          <ThemedText type="defaultSemiBold">components/HelloWave.tsx</ThemedText> component uses
-          the powerful{' '}
-          <ThemedText type="defaultSemiBold" style={{ fontFamily: Fonts.mono }}>
-            react-native-reanimated
-          </ThemedText>{' '}
-          library to create a waving hand animation.
-        </ThemedText>
-        {Platform.select({
-          ios: (
-            <ThemedText>
-              The <ThemedText type="defaultSemiBold">components/ParallaxScrollView.tsx</ThemedText>{' '}
-              component provides a parallax effect for the header image.
-            </ThemedText>
-          ),
-        })}
-      </Collapsible>
-    </ParallaxScrollView>
+import { Ionicons } from '@expo/vector-icons';
+
+const COLORS = {
+  primary: '#111827',
+  secondary: '#374151',
+  background: '#f5f7fb',
+  white: '#ffffff',
+  gray: '#6b7280',
+};
+
+const screenWidth = Dimensions.get('window').width;
+
+export default function SearchScreen() {
+
+  const [search, setSearch] = useState('');
+
+  const buildings = [
+
+    {
+      code: 'BRK',
+      name: 'Boromrajakumari Building',
+      faculty: 'Faculty of Arts',
+    },
+
+    {
+      code: 'ENG 1',
+      name: 'Engineering Building 1',
+      faculty: 'Faculty of Engineering',
+    },
+
+    {
+      code: 'CHALE',
+      name: 'Chaloem Rajakumari Building',
+      faculty: 'Communication Arts',
+    },
+
+    {
+      code: 'MTBLD',
+      name: 'Mahit Building',
+      faculty: 'Faculty of Medicine',
+    },
+
+    {
+      code: 'SCI',
+      name: 'Science Building',
+      faculty: 'Faculty of Science',
+    },
+
+  ];
+
+  const filtered = buildings.filter((building) =>
+
+    building.code.toLowerCase().includes(search.toLowerCase()) ||
+
+    building.name.toLowerCase().includes(search.toLowerCase())
+
   );
+
+  return (
+
+    <ScrollView
+      style={styles.container}
+      showsVerticalScrollIndicator={false}
+    >
+
+      {/* HERO */}
+
+      <View style={styles.hero}>
+
+        <Text style={styles.title}>
+          CU Atlas
+        </Text>
+
+        <Text style={styles.subtitle}>
+          Smart Campus Navigation
+        </Text>
+
+      </View>
+
+      {/* SEARCH BAR */}
+
+      <View style={styles.searchCard}>
+
+        <View style={styles.searchRow}>
+
+          <Ionicons
+            name='search'
+            size={22}
+            color='#6b7280'
+          />
+
+          <TextInput
+            placeholder='Search building or abbreviation'
+            value={search}
+            onChangeText={setSearch}
+            style={styles.input}
+          />
+
+        </View>
+
+      </View>
+
+      {/* RESULTS */}
+
+      <Text style={styles.sectionTitle}>
+        Buildings
+      </Text>
+
+      {filtered.map((building, index) => (
+
+        <TouchableOpacity
+          key={index}
+          style={styles.card}
+          onPress={() => {
+            alert(
+              `${building.name}\n\n${building.faculty}`
+            );
+          }}
+        >
+
+          <View style={styles.codeBox}>
+
+            <Text style={styles.code}>
+              {building.code}
+            </Text>
+
+          </View>
+
+          <View style={{ flex: 1 }}>
+
+            <Text style={styles.buildingName}>
+              {building.name}
+            </Text>
+
+            <Text style={styles.faculty}>
+              {building.faculty}
+            </Text>
+
+          </View>
+
+          <Ionicons
+            name='chevron-forward'
+            size={22}
+            color='#9ca3af'
+          />
+
+        </TouchableOpacity>
+
+      ))}
+
+      <View style={{ height: 120 }} />
+
+    </ScrollView>
+
+  );
+
 }
 
 const styles = StyleSheet.create({
-  headerImage: {
-    color: '#808080',
-    bottom: -90,
-    left: -35,
-    position: 'absolute',
+
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.background,
+    paddingHorizontal: screenWidth > 700 ? 60 : 20,
   },
-  titleContainer: {
+
+  hero: {
+    marginTop: 60,
+    marginBottom: 30,
+  },
+
+  title: {
+    fontSize: screenWidth > 700 ? 58 : 40,
+    fontWeight: 'bold',
+    color: COLORS.primary,
+  },
+
+  subtitle: {
+    marginTop: 8,
+    color: COLORS.gray,
+    fontSize: 16,
+  },
+
+  searchCard: {
+    backgroundColor: COLORS.white,
+    borderRadius: 28,
+    padding: 18,
+    marginBottom: 35,
+
+    shadowColor: '#000',
+    shadowOpacity: 0.06,
+    shadowRadius: 10,
+    elevation: 4,
+  },
+
+  searchRow: {
     flexDirection: 'row',
-    gap: 8,
+    alignItems: 'center',
   },
+
+  input: {
+    flex: 1,
+    marginLeft: 12,
+    fontSize: 15,
+  },
+
+  sectionTitle: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    color: COLORS.primary,
+  },
+
+  card: {
+    backgroundColor: COLORS.white,
+    borderRadius: 28,
+    padding: 22,
+    marginBottom: 18,
+    flexDirection: 'row',
+    alignItems: 'center',
+
+    shadowColor: '#000',
+    shadowOpacity: 0.06,
+    shadowRadius: 10,
+    elevation: 4,
+  },
+
+  codeBox: {
+    width: 70,
+    height: 70,
+    backgroundColor: COLORS.primary,
+    borderRadius: 18,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 18,
+  },
+
+  code: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 17,
+  },
+
+  buildingName: {
+    fontSize: 19,
+    fontWeight: 'bold',
+    color: COLORS.primary,
+  },
+
+  faculty: {
+    marginTop: 4,
+    color: COLORS.gray,
+  },
+
 });

@@ -429,7 +429,7 @@ buildings.insert_many(
         },
         {
             "code": "MAHIT",
-            "name_en": "Mhaitaladhibesra",
+            "name_en": "Mahitaladhibesra",
             "name_th": "อาคารมหิตลาธิเบศร",
             "pronunciation_th": "ah-caan-ma-hit-ta-la-ti-bed",
             "faculty": "Economics",

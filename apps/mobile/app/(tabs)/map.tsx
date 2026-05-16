@@ -14,14 +14,14 @@ type Building = {
 };
 
 const FACULTY_COLOR_RGB: Record<string, number[]> = {
-  Engineering: [164, 49, 42],  // Firebrick
-  Arts: [128, 128, 128],  // Grey
-  Science: [255, 255, 85],  // Yellow
-  Architecture: [152, 53, 48],  // Brown
-  Economics: [249, 217, 73],  // Gold
-  "Political Science": [0, 0, 0],  // Black
-  "Sports Science": [239, 134, 51],  // Orange
-  Other: [245, 194, 203],  // Pink
+  Engineering: [164, 49, 42], // Firebrick
+  Arts: [128, 128, 128], // Grey
+  Science: [255, 255, 85], // Yellow
+  Architecture: [152, 53, 48], // Brown
+  Economics: [249, 217, 73], // Gold
+  "Political Science": [0, 0, 0], // Black
+  "Sports Science": [239, 134, 51], // Orange
+  Other: [245, 194, 203], // Pink
 };
 
 const facultyFillColor = (building: Building) => {

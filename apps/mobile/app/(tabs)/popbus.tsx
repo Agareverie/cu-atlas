@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 import {
   View,
@@ -8,264 +8,162 @@ import {
   TextInput,
   TouchableOpacity,
   ActivityIndicator,
-} from 'react-native';
+} from "react-native";
 
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons } from "@expo/vector-icons";
 
 const COLORS = {
-  primary: '#111827',
-  secondary: '#374151',
-  background: '#f5f7fb',
-  white: '#ffffff',
-  gray: '#6b7280',
+  primary: "#111827",
+  secondary: "#374151",
+  background: "#f5f7fb",
+  white: "#ffffff",
+  gray: "#6b7280",
 };
 
 export default function PopBusScreen() {
-
-  const [fromLocation, setFromLocation] = useState('');
-  const [toLocation, setToLocation] = useState('');
+  const [fromLocation, setFromLocation] = useState("");
+  const [toLocation, setToLocation] = useState("");
   const [results, setResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
 
   const busRoutes = [
-
     {
-      line: 'Bus Line 1',
-      color: '#ef4444',
+      line: "Bus Line 1",
+      color: "#ef4444",
       stations: 13,
       stops: [
-        'Sala Phra Kieo',
-        'BRK',
-        'Arts',
-        'Political Science',
-        'Engineering',
-        'ENG 1',
-        'ENG 2',
-        'Chamchuri 9',
+        "Sala Phra Kieo",
+        "BRK",
+        "Arts",
+        "Political Science",
+        "Engineering",
+        "ENG 1",
+        "ENG 2",
+        "Chamchuri 9",
       ],
     },
 
     {
-      line: 'Bus Line 2',
-      color: '#3b82f6',
+      line: "Bus Line 2",
+      color: "#3b82f6",
       stations: 8,
       stops: [
-        'Sala Phra Kieo',
-        'Economics',
-        'MTBLD',
-        'Science',
-        'Engineering',
-        'BRK',
+        "Sala Phra Kieo",
+        "Economics",
+        "MTBLD",
+        "Science",
+        "Engineering",
+        "BRK",
       ],
     },
 
     {
-      line: 'Bus Line 3',
-      color: '#22c55e',
+      line: "Bus Line 3",
+      color: "#22c55e",
       stations: 10,
-      stops: [
-        'Science',
-        'Arts',
-        'Engineering',
-        'CHALE',
-        'BRK',
-        'Samyan',
-      ],
+      stops: ["Science", "Arts", "Engineering", "CHALE", "BRK", "Samyan"],
     },
 
     {
-      line: 'Bus Line 4',
-      color: '#f59e0b',
+      line: "Bus Line 4",
+      color: "#f59e0b",
       stations: 11,
-      stops: [
-        'CU Center',
-        'Engineering',
-        'MTBLD',
-        'BRK',
-        'CHALE',
-      ],
+      stops: ["CU Center", "Engineering", "MTBLD", "BRK", "CHALE"],
     },
-
   ];
 
   const findRoutes = () => {
-
     setLoading(true);
 
     setTimeout(() => {
-
       const filtered = busRoutes.filter((bus) => {
-
         const hasFrom = bus.stops.some((stop) =>
-          stop.toLowerCase().includes(
-            fromLocation.toLowerCase()
-          )
+          stop.toLowerCase().includes(fromLocation.toLowerCase()),
         );
 
         const hasTo = bus.stops.some((stop) =>
-          stop.toLowerCase().includes(
-            toLocation.toLowerCase()
-          )
+          stop.toLowerCase().includes(toLocation.toLowerCase()),
         );
 
-        return (
-          (fromLocation === '' || hasFrom) &&
-          (toLocation === '' || hasTo)
-        );
-
+        return (fromLocation === "" || hasFrom) && (toLocation === "" || hasTo);
       });
 
       setResults(filtered);
 
       setLoading(false);
-
     }, 1000);
-
   };
 
   return (
-
-    <ScrollView
-      style={styles.container}
-      showsVerticalScrollIndicator={false}
-    >
-
+    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <View style={styles.hero}>
+        <Text style={styles.title}>CU Pop Bus</Text>
 
-        <Text style={styles.title}>
-          CU Pop Bus
-        </Text>
-
-        <Text style={styles.subtitle}>
-          Smart campus transportation system
-        </Text>
-
+        <Text style={styles.subtitle}>Smart campus transportation system</Text>
       </View>
 
       {/* SEARCH CARD */}
 
       <View style={styles.searchCard}>
-
         <View style={styles.inputGroup}>
-
-          <Ionicons
-            name='location'
-            size={20}
-            color='#ef4444'
-          />
+          <Ionicons name="location" size={20} color="#ef4444" />
 
           <TextInput
-            placeholder='From'
+            placeholder="From"
             value={fromLocation}
             onChangeText={setFromLocation}
             style={styles.input}
           />
-
         </View>
 
         <View style={styles.inputGroup}>
-
-          <Ionicons
-            name='flag'
-            size={20}
-            color='#3b82f6'
-          />
+          <Ionicons name="flag" size={20} color="#3b82f6" />
 
           <TextInput
-            placeholder='To'
+            placeholder="To"
             value={toLocation}
             onChangeText={setToLocation}
             style={styles.input}
           />
-
         </View>
 
-        <TouchableOpacity
-          style={styles.button}
-          onPress={findRoutes}
-        >
-
-          <Text style={styles.buttonText}>
-            Find Routes
-          </Text>
-
+        <TouchableOpacity style={styles.button} onPress={findRoutes}>
+          <Text style={styles.buttonText}>Find Routes</Text>
         </TouchableOpacity>
-
       </View>
 
       {/* RESULTS */}
 
-      <Text style={styles.sectionTitle}>
-        Available Routes
-      </Text>
+      <Text style={styles.sectionTitle}>Available Routes</Text>
 
       {loading ? (
-
-        <ActivityIndicator
-          size='large'
-          color='#111827'
-        />
-
+        <ActivityIndicator size="large" color="#111827" />
       ) : results.length === 0 ? (
-
         <View style={styles.emptyCard}>
+          <Ionicons name="bus" size={55} color="#d1d5db" />
 
-          <Ionicons
-            name='bus'
-            size={55}
-            color='#d1d5db'
-          />
-
-          <Text style={styles.emptyText}>
-            Search routes to begin
-          </Text>
-
+          <Text style={styles.emptyText}>Search routes to begin</Text>
         </View>
-
       ) : (
-
         results.map((bus, index) => (
+          <View key={index} style={styles.routeCard}>
+            <View style={[styles.routeBar, { backgroundColor: bus.color }]} />
 
-          <View
-            key={index}
-            style={styles.routeCard}
-          >
+            <Text style={styles.routeTitle}>{bus.line}</Text>
 
-            <View
-              style={[
-                styles.routeBar,
-                { backgroundColor: bus.color }
-              ]}
-            />
+            <Text style={styles.routeStation}>{bus.stations} stations</Text>
 
-            <Text style={styles.routeTitle}>
-              {bus.line}
-            </Text>
-
-            <Text style={styles.routeStation}>
-              {bus.stations} stations
-            </Text>
-
-            <Text style={styles.routeStops}>
-              {bus.stops.join(' → ')}
-            </Text>
-
+            <Text style={styles.routeStops}>{bus.stops.join(" → ")}</Text>
           </View>
-
         ))
-
       )}
 
       <View style={{ height: 120 }} />
-
     </ScrollView>
-
   );
-
 }
 
 const styles = StyleSheet.create({
-
   container: {
     flex: 1,
     backgroundColor: COLORS.background,
@@ -279,7 +177,7 @@ const styles = StyleSheet.create({
 
   title: {
     fontSize: 42,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: COLORS.primary,
   },
 
@@ -291,7 +189,7 @@ const styles = StyleSheet.create({
 
   sectionTitle: {
     fontSize: 28,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 20,
     color: COLORS.primary,
   },
@@ -302,16 +200,16 @@ const styles = StyleSheet.create({
     padding: 22,
     marginBottom: 35,
 
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOpacity: 0.06,
     shadowRadius: 10,
     elevation: 4,
   },
 
   inputGroup: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#f3f4f6',
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#f3f4f6",
     borderRadius: 16,
     paddingHorizontal: 14,
     marginBottom: 18,
@@ -327,13 +225,13 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.primary,
     padding: 18,
     borderRadius: 16,
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 5,
   },
 
   buttonText: {
-    color: 'white',
-    fontWeight: 'bold',
+    color: "white",
+    fontWeight: "bold",
     fontSize: 16,
   },
 
@@ -341,9 +239,9 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     padding: 40,
     borderRadius: 28,
-    alignItems: 'center',
+    alignItems: "center",
 
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOpacity: 0.06,
     shadowRadius: 10,
     elevation: 4,
@@ -361,7 +259,7 @@ const styles = StyleSheet.create({
     padding: 22,
     marginBottom: 20,
 
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOpacity: 0.06,
     shadowRadius: 10,
     elevation: 4,
@@ -375,7 +273,7 @@ const styles = StyleSheet.create({
 
   routeTitle: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: COLORS.primary,
   },
 
@@ -389,5 +287,4 @@ const styles = StyleSheet.create({
     color: COLORS.secondary,
     lineHeight: 24,
   },
-
 });

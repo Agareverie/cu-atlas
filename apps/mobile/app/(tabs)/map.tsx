@@ -65,7 +65,7 @@ export default function MapPage() {
         center.longitude /= coordinates.length;
 
         return (
-          <>
+          <View key={`${building.code}-view`}>
             <Polygon
               key={`${building.code}-polygon`}
               fillColor="rgba(0, 120, 255, 0.25)"
@@ -74,19 +74,21 @@ export default function MapPage() {
               coordinates={coordinates}
             />
 
-            <Marker key={`${building.code}-marker`} coordinate={center}>
-              <View
+            <Marker coordinate={center} key={`${building.code}-marker`}>
+              <Text
                 style={{
                   backgroundColor: "white",
                   paddingHorizontal: 6,
                   paddingVertical: 2,
-                  borderRadius: 6,
+                  includeFontPadding: false,
+                  fontSize: 9,
+                  fontWeight: "400",
                 }}
               >
-                <Text>{building.code}</Text>
-              </View>
+                {building.code}
+              </Text>
             </Marker>
-          </>
+          </View>
         );
       })}
     </MapView>

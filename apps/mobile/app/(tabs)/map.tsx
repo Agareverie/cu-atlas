@@ -74,7 +74,11 @@ export default function MapPage() {
               coordinates={coordinates}
             />
 
-            <Marker coordinate={center} key={`${building.code}-marker`}>
+            <Marker
+              coordinate={center}
+              key={`${building.code}-marker`}
+              title={building.name_en}
+            >
               <Text
                 style={{
                   backgroundColor: "white",

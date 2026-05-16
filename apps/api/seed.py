@@ -339,7 +339,7 @@ buildings.insert_many(
             "name_en": "Nart Potiprasart",
             "name_th": "อาคารนารถ โพธิประสาท",
             "pronunciation_th": "ah-caan-nart po-ti-pra-saad",
-            "faculty": "Economics",
+            "faculty": "Architecture",
             "geometry": {
                 "type": "Polygon",
                 "coordinates": [

@@ -8,17 +8,16 @@ import {
   TextInput,
   TouchableOpacity,
   ActivityIndicator,
+  Dimensions,
 } from "react-native";
 
 import { IconSymbol } from "@/components/ui/icon-symbol";
+import { COLORS } from "@/theme/colors";
+import { SHADOWS } from "@/theme/shadows";
+import { LAYOUT } from "@/theme/layout";
+import { TYPOGRAPHY } from "@/theme/typography";
 
-const COLORS = {
-  primary: "#111827",
-  secondary: "#374151",
-  background: "#f5f7fb",
-  white: "#ffffff",
-  gray: "#6b7280",
-};
+const screenWidth = Dimensions.get("window").width;
 
 export default function PopBusScreen() {
   const [fromLocation, setFromLocation] = useState("");
@@ -117,7 +116,7 @@ export default function PopBusScreen() {
         </View>
 
         <View style={styles.inputGroup}>
-        <IconSymbol name="flag" size={20} color="#3b82f6" />
+          <IconSymbol name="flag" size={20} color="#3b82f6" />
 
           <TextInput
             placeholder="To"
@@ -167,7 +166,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.background,
-    paddingHorizontal: 20,
+    paddingHorizontal:
+      screenWidth > 700 ? LAYOUT.screenPadding.wide : LAYOUT.screenPadding.base,
   },
 
   hero: {
@@ -176,34 +176,29 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontSize: 42,
-    fontWeight: "bold",
     color: COLORS.primary,
+    ...TYPOGRAPHY.hero,
   },
 
   subtitle: {
     marginTop: 8,
-    color: COLORS.gray,
-    fontSize: 16,
+    color: COLORS.muted,
+    ...TYPOGRAPHY.body,
   },
 
   sectionTitle: {
-    fontSize: 28,
-    fontWeight: "bold",
     marginBottom: 20,
     color: COLORS.primary,
+    ...TYPOGRAPHY.sectionTitle,
   },
 
   searchCard: {
-    backgroundColor: COLORS.white,
+    backgroundColor: COLORS.surface,
     borderRadius: 28,
     padding: 22,
     marginBottom: 35,
 
-    shadowColor: "#000",
-    shadowOpacity: 0.06,
-    shadowRadius: 10,
-    elevation: 4,
+    ...SHADOWS.card,
   },
 
   inputGroup: {
@@ -219,6 +214,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     marginLeft: 10,
+    ...TYPOGRAPHY.body,
   },
 
   button: {
@@ -230,9 +226,8 @@ const styles = StyleSheet.create({
   },
 
   buttonText: {
-    color: "white",
-    fontWeight: "bold",
-    fontSize: 16,
+    color: COLORS.white,
+    ...TYPOGRAPHY.button,
   },
 
   emptyCard: {
@@ -241,16 +236,13 @@ const styles = StyleSheet.create({
     borderRadius: 28,
     alignItems: "center",
 
-    shadowColor: "#000",
-    shadowOpacity: 0.06,
-    shadowRadius: 10,
-    elevation: 4,
+    ...SHADOWS.card,
   },
 
   emptyText: {
     marginTop: 18,
-    color: COLORS.gray,
-    fontSize: 16,
+    color: COLORS.muted,
+    ...TYPOGRAPHY.body,
   },
 
   routeCard: {
@@ -259,10 +251,7 @@ const styles = StyleSheet.create({
     padding: 22,
     marginBottom: 20,
 
-    shadowColor: "#000",
-    shadowOpacity: 0.06,
-    shadowRadius: 10,
-    elevation: 4,
+    ...SHADOWS.card,
   },
 
   routeBar: {
@@ -272,19 +261,20 @@ const styles = StyleSheet.create({
   },
 
   routeTitle: {
-    fontSize: 24,
-    fontWeight: "bold",
     color: COLORS.primary,
+    ...TYPOGRAPHY.cardTitle,
   },
 
   routeStation: {
-    color: COLORS.gray,
+    color: COLORS.muted,
     marginTop: 5,
     marginBottom: 14,
+    ...TYPOGRAPHY.caption,
   },
 
   routeStops: {
     color: COLORS.secondary,
     lineHeight: 24,
+    ...TYPOGRAPHY.body,
   },
 });

@@ -1,17 +1,19 @@
 import { useEffect, useState } from "react";
-import { Platform, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  Dimensions,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 
 import { Collapsible } from "@/components/ui/collapsible";
 import { ThemedText } from "@/components/themed-text";
-
-const COLORS = {
-  background: "#f5f7fb",
-  surface: "#ffffff",
-  text: "#111827",
-  secondaryText: "#374151",
-  mutedText: "#6b7280",
-  border: "#e5e7eb",
-};
+import { COLORS } from "@/theme/colors";
+import { SHADOWS } from "@/theme/shadows";
+import { LAYOUT } from "@/theme/layout";
+import { TYPOGRAPHY } from "@/theme/typography";
 
 type Building = {
   _id: string;
@@ -21,6 +23,8 @@ type Building = {
   pronunciation_th: string;
   faculty: string;
 };
+
+const screenWidth = Dimensions.get("window").width;
 
 export default function HomeScreen() {
   const [buildings, setBuildings] = useState<Building[]>([]);
@@ -40,9 +44,7 @@ export default function HomeScreen() {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <Text style={{ ...styles.heading, marginTop: 40}}>
-        List of Buildings
-      </Text>
+      <Text style={styles.heading}>List of Buildings</Text>
 
       {buildings.map((building) => (
         <View key={building._id} style={styles.card}>
@@ -79,20 +81,22 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.background,
-    paddingLeft: (Platform.OS === "web" ? 70 : 0),
-    paddingRight: (Platform.OS === "web" ? 70 : 0),
+    paddingHorizontal:
+      screenWidth > 700 ? LAYOUT.screenPadding.wide : LAYOUT.screenPadding.base,
   },
 
   content: {
-    padding: 20,
     gap: 16,
+    paddingTop: 60,
+    paddingBottom: 32,
   },
 
   heading: {
-    fontSize: 32,
-    fontWeight: "700",
-    color: COLORS.text,
+    color: COLORS.primary,
     marginBottom: 8,
+    fontSize: TYPOGRAPHY.h1.fontSize,
+    fontWeight: TYPOGRAPHY.h1.fontWeight,
+    lineHeight: TYPOGRAPHY.h1.lineHeight,
   },
 
   card: {
@@ -100,19 +104,9 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     paddingHorizontal: 20,
     paddingVertical: 18,
-
     borderWidth: 1,
     borderColor: COLORS.border,
-
-    shadowColor: "#000",
-    shadowOpacity: 0.05,
-    shadowRadius: 10,
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-
-    elevation: 3,
+    ...SHADOWS.card,
   },
 
   cardContent: {
@@ -122,22 +116,21 @@ const styles = StyleSheet.create({
 
   englishName: {
     fontSize: 20,
-    color: COLORS.text,
+    color: COLORS.primary,
   },
 
   thaiName: {
     fontSize: 18,
-    color: COLORS.secondaryText,
+    color: COLORS.secondary,
   },
 
   pronunciation: {
-    fontSize: 14,
     fontStyle: "italic",
-    color: COLORS.mutedText,
+    color: COLORS.muted,
   },
 
   faculty: {
     marginTop: 6,
-    color: COLORS.secondaryText,
+    color: COLORS.secondary,
   },
 });

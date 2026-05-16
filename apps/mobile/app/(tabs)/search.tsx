@@ -11,14 +11,10 @@ import {
 } from "react-native";
 
 import { IconSymbol } from "@/components/ui/icon-symbol";
-
-const COLORS = {
-  primary: "#111827",
-  secondary: "#374151",
-  background: "#f5f7fb",
-  white: "#ffffff",
-  gray: "#6b7280",
-};
+import { COLORS } from "@/theme/colors";
+import { SHADOWS } from "@/theme/shadows";
+import { LAYOUT } from "@/theme/layout";
+import { TYPOGRAPHY } from "@/theme/typography";
 
 const screenWidth = Dimensions.get("window").width;
 
@@ -74,7 +70,7 @@ export default function SearchScreen() {
 
       <View style={styles.searchCard}>
         <View style={styles.searchRow}>
-          <IconSymbol name="magnifyingglass" size={22} color="#6b7280"/>
+          <IconSymbol name="magnifyingglass" size={22} color="#6b7280" />
 
           <TextInput
             placeholder="Search building, faculty or abbreviation"
@@ -111,7 +107,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.background,
-    paddingHorizontal: screenWidth > 700 ? 60 : 20,
+    paddingHorizontal:
+      screenWidth > 700 ? LAYOUT.screenPadding.wide : LAYOUT.screenPadding.base,
   },
 
   hero: {
@@ -120,15 +117,14 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontSize: screenWidth > 700 ? 58 : 40,
-    fontWeight: "bold",
     color: COLORS.primary,
+    ...(screenWidth > 700 ? TYPOGRAPHY.heroLarge : TYPOGRAPHY.hero),
   },
 
   subtitle: {
     marginTop: 8,
-    color: COLORS.gray,
-    fontSize: 16,
+    color: COLORS.muted,
+    ...TYPOGRAPHY.body,
   },
 
   searchCard: {
@@ -137,10 +133,7 @@ const styles = StyleSheet.create({
     padding: 18,
     marginBottom: 35,
 
-    shadowColor: "#000",
-    shadowOpacity: 0.06,
-    shadowRadius: 10,
-    elevation: 4,
+    ...SHADOWS.card,
   },
 
   searchRow: {
@@ -151,14 +144,13 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     marginLeft: 12,
-    fontSize: 15,
+    ...TYPOGRAPHY.body,
   },
 
   sectionTitle: {
-    fontSize: 28,
-    fontWeight: "bold",
     marginBottom: 20,
     color: COLORS.primary,
+    ...TYPOGRAPHY.sectionTitle,
   },
 
   card: {
@@ -169,10 +161,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
 
-    shadowColor: "#000",
-    shadowOpacity: 0.06,
-    shadowRadius: 10,
-    elevation: 4,
+    ...SHADOWS.card,
   },
 
   codeBox: {
@@ -186,19 +175,18 @@ const styles = StyleSheet.create({
   },
 
   code: {
-    color: "white",
-    fontWeight: "bold",
-    fontSize: 17,
+    color: COLORS.white,
+    ...TYPOGRAPHY.button,
   },
 
   buildingName: {
-    fontSize: 19,
-    fontWeight: "bold",
     color: COLORS.primary,
+    ...TYPOGRAPHY.cardTitle,
   },
 
   faculty: {
     marginTop: 4,
-    color: COLORS.gray,
+    color: COLORS.muted,
+    ...TYPOGRAPHY.caption,
   },
 });

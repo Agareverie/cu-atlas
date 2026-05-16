@@ -272,6 +272,29 @@ buildings.insert_many(
                 ],
             },
         },
+        {
+            "code": "SCI05",
+            "name_en": "Science 05",
+            "name_th": "วิทยาศาสตร์ 05",
+            "pronunciation_th": "wit-ta-ya-saad soon-ha",
+            "faculty": "Science",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [100.5296889, 13.7367471],
+                        [100.5299029, 13.7367133],
+                        [100.5298537, 13.73641],
+                        [100.5296776, 13.7364398],
+                        [100.5296848, 13.7364895],
+                        [100.5296265, 13.7364985],
+                        [100.5296561, 13.7367073],
+                        [100.5296817, 13.7367013],
+                        [100.5296889, 13.7367471],
+                    ]
+                ],
+            },
+        },
         # ARCHITECTURE
         {
             "code": "ARC03",
@@ -412,12 +435,59 @@ buildings.insert_many(
                 ],
             },
         },
+        # POLITICAL SCIENCE
+        {
+            "code": "POL3",
+            "name_en": "Political Science 3",
+            "name_th": "ตึก 3",
+            "pronunciation_th": "tuek-saam",
+            "faculty": "Political Science",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [100.5328324, 13.7343988],
+                        [100.5333168, 13.7343151],
+                        [100.5332654, 13.7340171],
+                        [100.5327782, 13.7341034],
+                        [100.5328324, 13.7343988],
+                    ]
+                ],
+            },
+        },
         # CHULAPAT
+        {
+            "code": "CUP7",
+            "name_en": "Chulapat 7",
+            "name_th": "จุฬาพัฒน์ 7",
+            "pronunciation_th": "ju-la-pad-jed",
+            "faculty": "Other",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [100.5265706, 13.7436019],
+                        [100.5266152, 13.7435935],
+                        [100.5266137, 13.7435796],
+                        [100.5269633, 13.7435272],
+                        [100.5269661, 13.7435593],
+                        [100.5270977, 13.7435404],
+                        [100.5270906, 13.7435048],
+                        [100.5274358, 13.7434531],
+                        [100.5274379, 13.7434643],
+                        [100.5274933, 13.7434573],
+                        [100.5274732, 13.7433476],
+                        [100.5265512, 13.7434887],
+                        [100.5265706, 13.7436019],
+                    ]
+                ],
+            },
+        },
         {
             "code": "CUP13",
             "name_en": "Chulapat 13",
             "name_th": "จุฬาพัฒน์ 13",
-            "pronunciation_th": "ju-la-pad sib-saam",
+            "pronunciation_th": "ju-la-pad-sib-saam",
             "faculty": "Other",
             "geometry": {
                 "type": "Polygon",
@@ -442,7 +512,7 @@ buildings.insert_many(
             "code": "CUP14",
             "name_en": "Chulapat 14",
             "name_th": "จุฬาพัฒน์ 14",
-            "pronunciation_th": "ju-la-pad sib-si",
+            "pronunciation_th": "ju-la-pad-sib-si",
             "faculty": "Other",
             "geometry": {
                 "type": "Polygon",

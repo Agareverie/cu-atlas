@@ -22,7 +22,7 @@ export default function TabLayout() {
         options={{
           title: "Buildings",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="safari" color={color} />
+            <IconSymbol size={28} name="graduationcap" color={color} />
           ),
         }}
       />

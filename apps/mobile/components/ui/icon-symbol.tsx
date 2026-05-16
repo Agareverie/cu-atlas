@@ -21,12 +21,14 @@ const MAPPING = {
   "paperplane.fill": "send",
   "chevron.left.forwardslash.chevron.right": "code",
   "chevron.right": "chevron-right",
+  graduationcap: "school",
   safari: "explore",
   map: "map",
   magnifyingglass: "search",
   bus: "directions-bus",
   pin: "location-pin",
   flag: "flag",
+  nosign: "block",
 } as IconMapping;
 
 /**

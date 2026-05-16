@@ -12,6 +12,9 @@ export const SHADOWS = {
       android: {
         elevation: 4,
       },
+      web: {
+        boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.30)",
+      },
     }),
   },
 
@@ -25,6 +28,9 @@ export const SHADOWS = {
       },
       android: {
         elevation: 2,
+      },
+      web: {
+        boxShadow: "0px 2px 6px rgba(0, 0, 0, 0.50)",
       },
     }),
   },

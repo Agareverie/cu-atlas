@@ -273,6 +273,25 @@ buildings.insert_many(
             },
         },
         {
+            "code": "MHVH",
+            "name_en": "Maha Vajirunhis",
+            "name_th": "มหาวชิรุณหิศ",
+            "pronunciation_th": "ma-ha-wa-shi-ruun-na-hid",
+            "faculty": "Science",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [100.5313198, 13.7369998],
+                        [100.53155, 13.736958],
+                        [100.5314525, 13.736423],
+                        [100.5312266, 13.7364634],
+                        [100.5313198, 13.7369998],
+                    ]
+                ],
+            },
+        },
+        {
             "code": "SCI05",
             "name_en": "Science 05",
             "name_th": "วิทยาศาสตร์ 05",
@@ -451,6 +470,26 @@ buildings.insert_many(
                         [100.5332654, 13.7340171],
                         [100.5327782, 13.7341034],
                         [100.5328324, 13.7343988],
+                    ]
+                ],
+            },
+        },
+        # INTEGRATED INNOVATION
+        {
+            "code": "CHALE",
+            "name_en": "Chalerm Rajakumari 60",
+            "name_th": "อาคารเฉลิมราชกุมารี 60 พรรษา",
+            "pronunciation_th": "ah-caan-cha-lerm-ra-cha-gu-ma-ree hok-sib-pun-saa",
+            "faculty": "Political Science",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [100.5279616, 13.7429707],
+                        [100.5283432, 13.7428966],
+                        [100.5282287, 13.7422999],
+                        [100.5278416, 13.7423714],
+                        [100.5279616, 13.7429707],
                     ]
                 ],
             },

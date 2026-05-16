@@ -98,7 +98,7 @@ export default function PopBusScreen() {
       <View style={styles.hero}>
         <Text style={styles.title}>CU Pop Bus</Text>
 
-        <Text style={styles.subtitle}>Smart campus transportation system</Text>
+        <Text style={styles.subtitle}>Find a Pop Bus route from point A to point B</Text>
       </View>
 
       {/* SEARCH CARD */}

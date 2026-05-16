@@ -61,9 +61,9 @@ export default function SearchScreen() {
       {/* HERO */}
 
       <View style={styles.hero}>
-        <Text style={styles.title}>CU Atlas</Text>
+        <Text style={styles.title}>Search</Text>
 
-        <Text style={styles.subtitle}>Smart Campus Navigation</Text>
+        <Text style={styles.subtitle}>Find a building given a keyword</Text>
       </View>
 
       {/* SEARCH BAR */}
@@ -84,19 +84,33 @@ export default function SearchScreen() {
       {/* RESULTS */}
       <Text style={styles.sectionTitle}>Buildings</Text>
 
-      {filtered.map((building, index) => (
-        <View key={index} style={styles.card}>
-          <View style={styles.codeBox}>
-            <Text style={styles.code}>{building.code}</Text>
-          </View>
+      {search === "" ? (
+        <View style={styles.emptyCard}>
+          <IconSymbol name="magnifyingglass" size={55} color="#d1d5db" />
 
-          <View style={{ flex: 1 }}>
-            <Text style={styles.buildingName}>{building.name_en}</Text>
-
-            <Text style={styles.faculty}>{building.faculty}</Text>
-          </View>
+          <Text style={styles.emptyText}>Search buildings to begin</Text>
         </View>
-      ))}
+      ) : filtered.length === 0 ? (
+        <View style={styles.emptyCard}>
+          <IconSymbol name="nosign" size={55} color="#d1d5db" />
+
+          <Text style={styles.emptyText}>No buildings match</Text>
+        </View>
+      ) : (
+        filtered.map((building, index) => (
+          <View key={index} style={styles.card}>
+            <View style={styles.codeBox}>
+              <Text style={styles.code}>{building.code}</Text>
+            </View>
+
+            <View style={{ flex: 1 }}>
+              <Text style={styles.buildingName}>{building.name_en}</Text>
+
+              <Text style={styles.faculty}>{building.faculty}</Text>
+            </View>
+          </View>
+        ))
+      )}
 
       <View style={{ height: 120 }} />
     </ScrollView>
@@ -144,6 +158,7 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     marginLeft: 12,
+    color: COLORS.muted,
     ...TYPOGRAPHY.body,
   },
 
@@ -162,6 +177,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
 
     ...SHADOWS.card,
+  },
+
+  emptyCard: {
+    backgroundColor: COLORS.white,
+    padding: 40,
+    borderRadius: 28,
+    alignItems: "center",
+
+    ...SHADOWS.card,
+  },
+
+  emptyText: {
+    marginTop: 18,
+    color: COLORS.muted,
+    ...TYPOGRAPHY.body,
   },
 
   codeBox: {

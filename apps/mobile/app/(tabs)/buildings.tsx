@@ -44,8 +44,11 @@ export default function HomeScreen() {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <Text style={styles.heading}>List of Buildings</Text>
+      <View>
+        <Text style={styles.title}>Buildings</Text>
 
+        <Text style={styles.subtitle}>List of buildings in Chulalongkorn University</Text>
+      </View>
       {buildings.map((building) => (
         <View key={building._id} style={styles.card}>
           <Collapsible title={building.code}>
@@ -91,10 +94,20 @@ const styles = StyleSheet.create({
     paddingBottom: 32,
   },
 
-  heading: {
+  hero: {
+    marginTop: 60,
+    marginBottom: 30,
+  },
+
+  title: {
     color: COLORS.primary,
-    marginBottom: 8,
     ...TYPOGRAPHY.hero,
+  },
+
+  subtitle: {
+    marginTop: 8,
+    color: COLORS.muted,
+    ...TYPOGRAPHY.body,
   },
 
   card: {

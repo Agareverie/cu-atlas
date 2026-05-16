@@ -191,7 +191,7 @@ buildings.insert_many(
             "code": "MCS",
             "name_en": "Mahachakrisirindhorn",
             "name_th": "มหาจักรีสิรินธร",
-            "pronunciation_th": "Ma-ha-ja-gree-si-rin-torn",
+            "pronunciation_th": "ma-ha-ja-gree-si-rin-torn",
             "faculty": "Arts",
             "geometry": {
                 "type": "Polygon",
@@ -432,7 +432,7 @@ buildings.insert_many(
             "name_en": "Mhaitaladhibesra",
             "name_th": "อาคารมหิตลาธิเบศร",
             "pronunciation_th": "ah-caan-ma-hit-ta-la-ti-bed",
-            "faculty": "Architecture",
+            "faculty": "Economics",
             "geometry": {
                 "type": "Polygon",
                 "coordinates": [
@@ -500,7 +500,7 @@ buildings.insert_many(
             "name_en": "Chulapat 7",
             "name_th": "จุฬาพัฒน์ 7",
             "pronunciation_th": "ju-la-pad-jed",
-            "faculty": "Other",
+            "faculty": "Sports Science",
             "geometry": {
                 "type": "Polygon",
                 "coordinates": [

@@ -4,25 +4,210 @@ client = MongoClient("mongodb://localhost:27017/")
 db = client["cu_atlas_db"]
 
 # Drop the initial databases
-db["buildings"].drop()
+buildings = db["buildings"]
+buildings.drop()
+buildings.create_index([("geometry", "2dsphere")])
+buildings.create_index("code", unique=True)
 
-db["buildings"].insert_many([
-    # ENGINEERING
-    {"code": "ENG1", "name_en": "Engineering 1", "name_th": "ตึก 1", "pronunciation_th": "tuek-nueng", "faculty": "Engineering"},
-    {"code": "ENG2", "name_en": "Engineering 2", "name_th": "ตึก 2", "pronunciation_th": "tuek-song", "faculty": "Engineering"},
-    {"code": "ENG3", "name_en": "Engineering 3", "name_th": "ตึก 3", "pronunciation_th": "tuek-sam", "faculty": "Engineering"},
-    {"code": "ENG4", "name_en": "Engineering 4", "name_th": "ตึก 4", "pronunciation_th": "tuek-si", "faculty": "Engineering"},
-    {"code": "ENG5", "name_en": "Engineering 5", "name_th": "ตึก 5", "pronunciation_th": "tuek-ha", "faculty": "Engineering"},
-    {"code": "EN100", "name_en": "Centennial Memorial Building", "name_th": "ตึก 100 ปี", "pronunciation_th": "tuek-roi-pi", "faculty": "Engineering"},
-    {"code": "HANS", "name_en": "Mechanical Engineering (Hans Building)", "name_th": "ตึกภาควิชาวิศวกรรมเครื่องกล (ฮันส์ บันตลิ)", "pronunciation_th": "tuek-pak-wi-sha-wi-sa-wa-gum-crueng-gon (Hans Bantle)", "faculty": "Engineering"},
-    {"code": "IE", "name_en": "Industrial Engineering", "name_th": "ตึกวิศวกรรมอุตสาหการ", "pronunciation_th": "tuek-wi-sa-wa-gum-oot-sa-ha-garn", "faculty": "Engineering"},
-    {"code": "EE", "name_en": "Electrical Engineering", "name_th": "ตึกวิศวกรรมไฟฟ้า", "pronunciation_th": "tuek-wi-sa-wa-gum-fai-fa", "faculty": "Engineering"},
-    {"code": "EELAB", "name_en": "Electrical Engineering Laboratory", "name_th": "ตึกภาควิชาวิศวกรรมไฟฟ้า", "pronunciation_th": "tuek-pak-wi-sha-wi-sa-wa-gum-fai-fa", "faculty": "Engineering"},
-    {"code": "IELAB", "name_en": "Industrial Engineering Laboratory", "name_th": "ตึกภาควิชาวิศวกรรมอุตสาหการ", "pronunciation_th": "tuek-pak-wi-sha-wi-sa-wa-gum-oot-sa-ha-garn", "faculty": "Engineering"},
-    {"code": "ENV", "name_en": "Environmental Engineering", "name_th": "ตึกวิศวกรรมสิ่งแวดล้อม", "pronunciation_th": "tuek-wi-sa-wa-gum-sing-wadd-lorm", "faculty": "Engineering"},
-    {"code": "MNBLD", "name_en": "Mining and Petroleum Engineering", "name_th": "ตึกภาควิชาวิศวกรรมเหมืองแร่และปิโตรเลียม", "pronunciation_th": "tuek-pak-wi-sha-wi-sa-wa-gum-mueng-rae-lae-petroleum", "faculty": "Engineering"},
-    {"code": "MTBLD", "name_en": "Metallurgical Engineering", "name_th": "ตึกภาควิชาวิศวกรรมโลหการ", "pronunciation_th": "tuek-pak-wi-sha-wi-sa-wa-gum-lo-ha-garn", "faculty": "Engineering"},
-])
+buildings.insert_many(
+    [
+        # ENGINEERING
+        {
+            "code": "ENG1",
+            "name_en": "Engineering 1",
+            "name_th": "ตึก 1",
+            "pronunciation_th": "tuek-nueng",
+            "faculty": "Engineering",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [100.5323277, 13.7367241],
+                        [100.5324513, 13.7367057],
+                        [100.5324456, 13.7366724],
+                        [100.5328184, 13.7366262],
+                        [100.5328184, 13.7366428],
+                        [100.5329306, 13.7366299],
+                        [100.5329077, 13.7364526],
+                        [100.5327936, 13.736471],
+                        [100.5327955, 13.7364895],
+                        [100.5326808, 13.7365038],
+                        [100.532669, 13.7364501],
+                        [100.5325065, 13.736471],
+                        [100.5325084, 13.7365375],
+                        [100.5324247, 13.7365449],
+                        [100.5324231, 13.7365268],
+                        [100.5323011, 13.7365412],
+                        [100.5323277, 13.7367241],
+                    ]
+                ],
+            },
+        },
+        {
+            "code": "ENG2",
+            "name_en": "Engineering 2",
+            "name_th": "ตึก 2",
+            "pronunciation_th": "tuek-song",
+            "faculty": "Engineering",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [100.5330841, 13.7366025],
+                        [100.5332078, 13.7365883],
+                        [100.5332024, 13.7365547],
+                        [100.5335722, 13.7365056],
+                        [100.5335762, 13.7365224],
+                        [100.5336853, 13.7365095],
+                        [100.5336666, 13.7363324],
+                        [100.5335509, 13.736348],
+                        [100.5335523, 13.7363673],
+                        [100.5334325, 13.7363867],
+                        [100.5334272, 13.7363286],
+                        [100.5332636, 13.7363492],
+                        [100.533269, 13.73641],
+                        [100.5331812, 13.7364281],
+                        [100.5331772, 13.7364074],
+                        [100.5330575, 13.7364203],
+                        [100.5330841, 13.7366025],
+                    ]
+                ],
+            },
+        },
+        {
+            "code": "ENG3",
+            "name_en": "Engineering 3",
+            "name_th": "ตึก 3",
+            "pronunciation_th": "tuek-sam",
+            "faculty": "Engineering",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [100.5323033, 13.737305],
+                        [100.5328482, 13.7372228],
+                        [100.5328547, 13.7372571],
+                        [100.5330164, 13.7372356],
+                        [100.5329705, 13.7369696],
+                        [100.5333188, 13.7369114],
+                        [100.5333571, 13.7371692],
+                        [100.5335229, 13.7371444],
+                        [100.5335176, 13.7371126],
+                        [100.5339973, 13.7370413],
+                        [100.5339597, 13.7368187],
+                        [100.533838, 13.7368343],
+                        [100.5338452, 13.7369022],
+                        [100.5334961, 13.7369561],
+                        [100.5334424, 13.7366517],
+                        [100.5327728, 13.7367543],
+                        [100.5328212, 13.7370691],
+                        [100.5324394, 13.7371232],
+                        [100.532419, 13.7370108],
+                        [100.5322608, 13.7370372],
+                        [100.5323033, 13.737305],
+                    ]
+                ],
+            },
+        },
+        {
+            "code": "ENG4",
+            "name_en": "Engineering 4",
+            "name_th": "ตึก 4",
+            "pronunciation_th": "tuek-si",
+            "faculty": "Engineering",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [100.5337392, 13.7361634],
+                        [100.5340292, 13.7361139],
+                        [100.5340079, 13.7359714],
+                        [100.5339771, 13.7359766],
+                        [100.5339655, 13.7358982],
+                        [100.5340483, 13.7358827],
+                        [100.5340303, 13.7357723],
+                        [100.5336223, 13.7358404],
+                        [100.5336393, 13.7359467],
+                        [100.533736, 13.7359312],
+                        [100.5337477, 13.7360107],
+                        [100.5337158, 13.7360169],
+                        [100.5337392, 13.7361634],
+                    ]
+                ],
+            },
+        },
+        {
+            "code": "EN100",
+            "name_en": "Centennial Memorial Building",
+            "name_th": "ตึก 100 ปี",
+            "pronunciation_th": "tuek-roi-pi",
+            "faculty": "Engineering",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [100.533744, 13.7365355],
+                        [100.534164, 13.7364699],
+                        [100.5341315, 13.7362135],
+                        [100.5337037, 13.7362716],
+                        [100.533744, 13.7365355],
+                    ]
+                ],
+            },
+        },
+        # ARTS
+        {
+            "code": "BRK",
+            "name_en": "Boromarajakumari Building",
+            "name_th": "อาคารบรมราชกุมารี",
+            "pronunciation_th": "ah-caan-bo-rom-ma-ra-cha-gu-ma-ree",
+            "faculty": "Arts",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [100.5332576, 13.7395347],
+                        [100.5333269, 13.7395239],
+                        [100.5333325, 13.7395562],
+                        [100.533697, 13.7395064],
+                        [100.533697, 13.7394714],
+                        [100.5337552, 13.7394633],
+                        [100.5337261, 13.7392546],
+                        [100.5336665, 13.739264],
+                        [100.5336596, 13.739229],
+                        [100.5335709, 13.7392411],
+                        [100.5335626, 13.739194],
+                        [100.5333671, 13.7392196],
+                        [100.533374, 13.7392681],
+                        [100.5332923, 13.7392788],
+                        [100.533295, 13.7393125],
+                        [100.5332285, 13.7393206],
+                        [100.5332576, 13.7395347],
+                    ]
+                ],
+            },
+        },
+        {
+            "code": "MCS",
+            "name_en": "Mahachakrisirindhorn",
+            "name_th": "มหาจักรีสิรินธร",
+            "pronunciation_th": "Ma-ha-ja-gree-si-rin-torn",
+            "faculty": "Arts",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [100.5338203, 13.7394692],
+                        [100.5343052, 13.739396],
+                        [100.5342614, 13.7391193],
+                        [100.5337834, 13.7391898],
+                        [100.5338203, 13.7394692],
+                    ]
+                ],
+            },
+        },
+    ]
+)
 
 client.close()
 print("Database seeded successfully")

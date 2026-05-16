@@ -7,6 +7,7 @@ import {
   TextInput,
   ScrollView,
   Dimensions,
+  Platform,
 } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
@@ -35,7 +36,11 @@ export default function SearchScreen() {
   >([]);
 
   useEffect(() => {
-    fetch("http://10.0.2.2:3000/buildings")
+    fetch(
+      Platform.OS === "android"
+        ? "http://10.0.2.2:3000/buildings"
+        : "http://localhost:3000/buildings",
+    )
       .then((res) => res.json())
       .then((data) => {
         setBuildings(data.buildings);

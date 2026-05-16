@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { Platform, ScrollView, StyleSheet, Text, View } from "react-native";
 
 import { Collapsible } from "@/components/ui/collapsible";
 import { ThemedText } from "@/components/themed-text";
@@ -26,7 +26,11 @@ export default function HomeScreen() {
   const [buildings, setBuildings] = useState<Building[]>([]);
 
   useEffect(() => {
-    fetch("http://10.0.2.2:3000/buildings")
+    fetch(
+      Platform.OS === "android"
+        ? "http://10.0.2.2:3000/buildings"
+        : "http://localhost:3000/buildings",
+    )
       .then((res) => res.json())
       .then((data) => {
         setBuildings(data.buildings);
@@ -36,7 +40,7 @@ export default function HomeScreen() {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <Text style={{ ...styles.heading, marginTop: 40 }}>
+      <Text style={{ ...styles.heading, marginTop: 40}}>
         List of Buildings
       </Text>
 
@@ -75,6 +79,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.background,
+    paddingLeft: (Platform.OS === "web" ? 70 : 0),
+    paddingRight: (Platform.OS === "web" ? 70 : 0),
   },
 
   content: {

@@ -206,6 +206,25 @@ buildings.insert_many(
                 ],
             },
         },
+        {
+            "code": "MHVH",
+            "name_en": "Maha Vajirunhis",
+            "name_th": "มหาวชิรุณหิศ",
+            "pronunciation_th": "ma-ha-wa-shi-ruun-na-hid",
+            "faculty": "Arts",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [100.5313198, 13.7369998],
+                        [100.53155, 13.736958],
+                        [100.5314525, 13.736423],
+                        [100.5312266, 13.7364634],
+                        [100.5313198, 13.7369998],
+                    ]
+                ],
+            },
+        },
         # SCIENCE
         {
             "code": "TAB",
@@ -268,25 +287,6 @@ buildings.insert_many(
                         [100.530701, 13.7357193],
                         [100.530158, 13.7358057],
                         [100.5302113, 13.7361546],
-                    ]
-                ],
-            },
-        },
-        {
-            "code": "MHVH",
-            "name_en": "Maha Vajirunhis",
-            "name_th": "มหาวชิรุณหิศ",
-            "pronunciation_th": "ma-ha-wa-shi-ruun-na-hid",
-            "faculty": "Science",
-            "geometry": {
-                "type": "Polygon",
-                "coordinates": [
-                    [
-                        [100.5313198, 13.7369998],
-                        [100.53155, 13.736958],
-                        [100.5314525, 13.736423],
-                        [100.5312266, 13.7364634],
-                        [100.5313198, 13.7369998],
                     ]
                 ],
             },

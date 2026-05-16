@@ -480,7 +480,7 @@ buildings.insert_many(
             "name_en": "Chalerm Rajakumari 60",
             "name_th": "อาคารเฉลิมราชกุมารี 60 พรรษา",
             "pronunciation_th": "ah-caan-cha-lerm-ra-cha-gu-ma-ree hok-sib-pun-saa",
-            "faculty": "Political Science",
+            "faculty": "BASCii",
             "geometry": {
                 "type": "Polygon",
                 "coordinates": [

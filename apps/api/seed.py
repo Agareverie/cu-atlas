@@ -225,6 +225,27 @@ buildings.insert_many(
                 ],
             },
         },
+        {
+            "code": "PREML",
+            "name_en": "Prem Purachatra Building (Language Institute)",
+            "name_th": "อาคารเปรมบุรฉัตร (สถาบันภาษา)",
+            "pronunciation_th": "ah-caan-prem-pu-ra-chut (sa-ta-bun-pa-sa)",
+            "faculty": "Arts",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [100.5319091, 13.7352346],
+                        [100.5320972, 13.7353715],
+                        [100.5324854, 13.7353169],
+                        [100.5326322, 13.7351274],
+                        [100.5324362, 13.7349906],
+                        [100.532048, 13.735048],
+                        [100.5319091, 13.7352346],
+                    ]
+                ],
+            },
+        },
         # SCIENCE
         {
             "code": "TAB",
@@ -273,6 +294,25 @@ buildings.insert_many(
             },
         },
         {
+            "code": "BIO1",
+            "name_en": "Biology 1",
+            "name_th": "ตึกชีววิทยา 1",
+            "pronunciation_th": "tuek-shee-wa-wit-ta-ya-nueng",
+            "faculty": "Science",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [100.5301379, 13.7373139],
+                        [100.5307411, 13.7372195],
+                        [100.5307121, 13.7370589],
+                        [100.5301126, 13.7371484],
+                        [100.5301379, 13.7373139],
+                    ]
+                ],
+            },
+        },
+        {
             "code": "MHMK",
             "name_en": "Mahamakut Building",
             "name_th": "อาคารมหามกุฎ",
@@ -310,6 +350,25 @@ buildings.insert_many(
                         [100.5296561, 13.7367073],
                         [100.5296817, 13.7367013],
                         [100.5296889, 13.7367471],
+                    ]
+                ],
+            },
+        },
+        {
+            "code": "SCI10",
+            "name_en": "Science 10",
+            "name_th": "ตึก 7 ชั้น",
+            "pronunciation_th": "tuek-jed-chun",
+            "faculty": "Science",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [100.5298286, 13.7359414],
+                        [100.5300181, 13.7359155],
+                        [100.5299194, 13.735301],
+                        [100.5297315, 13.7353329],
+                        [100.5298286, 13.7359414],
                     ]
                 ],
             },

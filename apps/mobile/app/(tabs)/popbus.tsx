@@ -18,21 +18,19 @@ import { COLORS } from "@/theme/colors";
 import { SHADOWS } from "@/theme/shadows";
 import { LAYOUT } from "@/theme/layout";
 import { TYPOGRAPHY } from "@/theme/typography";
-import { Route } from "@/types/route";
+import { STATION_DISPLAY_NAME } from "@/utils/station-names";
+import { Route, Station } from "@/types/route";
 
 const screenWidth = Dimensions.get("window").width;
 
 export default function PopBusScreen() {
   const [fromLocation, setFromLocation] = useState("");
+  const [fromKey, setFromKey] = useState("");
   const [toLocation, setToLocation] = useState("");
+  const [toKey, setToKey] = useState("");
 
   const [results, setResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
-
-  const [recentFrom, setRecentFrom] = useState<string[]>([]);
-  const [recentTo, setRecentTo] = useState<string[]>([]);
-
-  const [nearestMessage, setNearestMessage] = useState("");
 
   const [routes, setRoutes] = useState<Route[]>([]);
 
@@ -51,101 +49,172 @@ export default function PopBusScreen() {
       });
   }, []);
 
-  const allStations = Array.from(
-    new Set(routes.flatMap((route) => route.stops)),
-  );
+  const allStations = (
+    Object.keys(STATION_DISPLAY_NAME) as Station[]
+  ).sort();
 
   const fromSuggestions = allStations.filter(
     (station) =>
-      station.toLowerCase().includes(fromLocation.toLowerCase()) &&
-      fromLocation.length > 0,
-  ).toSorted();
+      fromLocation.length > 0 &&
+      (station.toLowerCase().includes(fromLocation.toLowerCase()) ||
+        (STATION_DISPLAY_NAME[station as Station] ?? "")
+          .toLowerCase()
+          .includes(fromLocation.toLowerCase())),
+  );
 
   const toSuggestions = allStations.filter(
     (station) =>
-      station.toLowerCase().includes(toLocation.toLowerCase()) &&
-      toLocation.length > 0,
-  ).toSorted();
+      toLocation.length > 0 &&
+      (station.toLowerCase().includes(toLocation.toLowerCase()) ||
+        (STATION_DISPLAY_NAME[station as Station] ?? "")
+          .toLowerCase()
+          .includes(toLocation.toLowerCase())),
+  );
 
-  const normalizeInput = (input: string) => {
-    if (!input) {
-      return "sala";
-    }
+  const normalizeInput = (input: string, key: string): Station => {
+    if (!input && !key) return "sala";
+    if (key) return key as Station; // if selected from dropdown, use key directly
 
     const lowerInput = input.toLowerCase();
 
-    for (const station of allStations.toSorted()) {
-      const lowerStation = station.toLowerCase();
+    // 1. Exact key match
+    const exactKey = allStations.find((s) => s === lowerInput);
+    if (exactKey) return exactKey;
 
-      if (
-        lowerStation.includes(lowerInput) ||
-        lowerInput.includes(lowerStation)
-      ) {
-        setNearestMessage(`Nearest POP Bus station: ${station}`);
+    // 2. Exact display name match (case insensitive)
+    const exactName = allStations.find(
+      (s) => (STATION_DISPLAY_NAME[s] ?? "").toLowerCase() === lowerInput,
+    );
+    if (exactName) return exactName;
 
-        return station;
-      }
-    }
+    // 3. Display name starts with input
+    const startsWithName = allStations.find((s) =>
+      (STATION_DISPLAY_NAME[s] ?? "").toLowerCase().startsWith(lowerInput),
+    );
+    if (startsWithName) return startsWithName;
 
-    return input;
+    // 4. Key starts with input
+    const startsWithKey = allStations.find((s) => s.startsWith(lowerInput));
+    if (startsWithKey) return startsWithKey;
+
+    // 5. Substring fallback (last resort)
+    const substring = allStations.find(
+      (s) =>
+        s.includes(lowerInput) ||
+        (STATION_DISPLAY_NAME[s] ?? "").toLowerCase().includes(lowerInput),
+    );
+    if (substring) return substring;
+
+    return input as Station;
   };
 
   const findRoutes = () => {
     setLoading(true);
-    setNearestMessage("");
 
     setTimeout(() => {
-      const from = normalizeInput(fromLocation);
-      const to = normalizeInput(toLocation);
-
+      const from = normalizeInput(fromLocation, fromKey);
+      const to = normalizeInput(toLocation, toKey);
       const matchedRoutes: any[] = [];
 
       for (const bus of routes) {
-        const fromIndex = bus.stops.findIndex((stop) =>
-          stop.toLowerCase() === from.toLowerCase(),
-        );
+        const fromIndex = bus.stops.indexOf(from as Station);
+        const toIndex = bus.stops.indexOf(to as Station);
 
-        const toIndex = bus.stops.findIndex((stop) =>
-          stop.toLowerCase() === to.toLowerCase(),
-        );
+        if (fromIndex === -1 || toIndex === -1 || fromIndex === toIndex)
+          continue;
 
-        if (fromIndex !== -1 && toIndex !== -1 && fromIndex !== toIndex) {
-          const stationsAway = Math.abs(toIndex - fromIndex);
+        // Circular forward distance: how many stops going forward (wrapping)
+        const totalStops = bus.stops.length;
+        const forwardStops =
+          toIndex >= fromIndex
+            ? toIndex - fromIndex
+            : totalStops - fromIndex + toIndex;
 
-          matchedRoutes.push({
-            ...bus,
-            stationsAway,
-            from,
-            to,
-          });
+        const forwardSequence: Station[] = [];
+        for (let i = 0; i <= forwardStops; i++) {
+          forwardSequence.push(bus.stops[(fromIndex + i) % totalStops]);
+        }
+
+        matchedRoutes.push({
+          ...bus,
+          stationsAway: forwardStops,
+          from,
+          to,
+          via: null,
+          sequence: forwardSequence,
+        });
+      }
+
+      // If no direct routes found, try via Sala
+      if (matchedRoutes.length === 0) {
+        const sala = "sala" as Station;
+
+        for (const leg1Bus of routes) {
+          const fromIndex = leg1Bus.stops.indexOf(from as Station);
+          const salaIndex1 = leg1Bus.stops.indexOf(sala);
+          if (fromIndex === -1 || salaIndex1 === -1 || fromIndex === salaIndex1)
+            continue;
+
+          const leg1Stops =
+            salaIndex1 >= fromIndex
+              ? salaIndex1 - fromIndex
+              : leg1Bus.stops.length - fromIndex + salaIndex1;
+
+          for (const leg2Bus of routes) {
+            const salaIndex2 = leg2Bus.stops.indexOf(sala);
+            const toIndex = leg2Bus.stops.indexOf(to as Station);
+            if (salaIndex2 === -1 || toIndex === -1 || salaIndex2 === toIndex)
+              continue;
+
+            const leg2Stops =
+              toIndex >= salaIndex2
+                ? toIndex - salaIndex2
+                : leg2Bus.stops.length - salaIndex2 + toIndex;
+
+            // Build leg 1 stop sequence
+            const leg1Sequence: Station[] = [];
+            for (let i = 0; i <= leg1Stops; i++) {
+              leg1Sequence.push(
+                leg1Bus.stops[(fromIndex + i) % leg1Bus.stops.length],
+              );
+            }
+
+            // Build leg 2 stop sequence
+            const leg2Sequence: Station[] = [];
+            for (let i = 0; i <= leg2Stops; i++) {
+              leg2Sequence.push(
+                leg2Bus.stops[(salaIndex2 + i) % leg2Bus.stops.length],
+              );
+            }
+
+            matchedRoutes.push({
+              leg1: {
+                ...leg1Bus,
+                from,
+                to: sala,
+                stationsAway: leg1Stops,
+                sequence: leg1Sequence,
+              },
+              leg2: {
+                ...leg2Bus,
+                from: sala,
+                to,
+                stationsAway: leg2Stops,
+                sequence: leg2Sequence,
+              },
+              stationsAway: leg1Stops + leg2Stops,
+              via: sala,
+            });
+          }
         }
       }
 
       matchedRoutes.sort((a, b) => a.stationsAway - b.stationsAway);
-
       setResults(matchedRoutes);
-
-      if (fromLocation) {
-        setRecentFrom((prev) =>
-          [fromLocation, ...prev.filter((item) => item !== fromLocation)].slice(
-            0,
-            5,
-          ),
-        );
-      }
-
-      if (toLocation) {
-        setRecentTo((prev) =>
-          [toLocation, ...prev.filter((item) => item !== toLocation)].slice(
-            0,
-            5,
-          ),
-        );
-      }
-
       setLoading(false);
     }, 300);
   };
+
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <View style={styles.hero}>
@@ -168,7 +237,10 @@ export default function PopBusScreen() {
           <TextInput
             placeholder="From (default: Sala Phra Kieo)"
             value={fromLocation}
-            onChangeText={setFromLocation}
+            onChangeText={(text) => {
+              setFromLocation(text);
+              setFromKey(""); // clear key when typing manually
+            }}
             style={styles.input}
           />
         </View>
@@ -177,9 +249,12 @@ export default function PopBusScreen() {
           <TouchableOpacity
             key={index}
             style={styles.suggestion}
-            onPress={() => setFromLocation(item)}
+            onPress={() => {
+              setFromLocation(STATION_DISPLAY_NAME[item as Station] ?? item);
+              setFromKey(item);
+            }}
           >
-            <Text>{item}</Text>
+            <Text>{STATION_DISPLAY_NAME[item as Station] ?? item}</Text>
           </TouchableOpacity>
         ))}
 
@@ -187,9 +262,12 @@ export default function PopBusScreen() {
           <IconSymbol name="flag" size={20} color="#3b82f6" />
 
           <TextInput
-            placeholder="To station"
+            placeholder="To"
             value={toLocation}
-            onChangeText={setToLocation}
+            onChangeText={(text) => {
+              setToLocation(text);
+              setToKey("");
+            }}
             style={styles.input}
           />
         </View>
@@ -198,9 +276,12 @@ export default function PopBusScreen() {
           <TouchableOpacity
             key={index}
             style={styles.suggestion}
-            onPress={() => setToLocation(item)}
+            onPress={() => {
+              setToLocation(STATION_DISPLAY_NAME[item as Station] ?? item);
+              setToKey(item);
+            }}
           >
-            <Text>{item}</Text>
+            <Text>{STATION_DISPLAY_NAME[item as Station] ?? item}</Text>
           </TouchableOpacity>
         ))}
 
@@ -208,28 +289,6 @@ export default function PopBusScreen() {
           <Text style={styles.buttonText}>Find Routes</Text>
         </TouchableOpacity>
       </View>
-
-      {recentFrom.length > 0 && (
-        <View style={styles.recentBox}>
-          <Text style={styles.recentTitle}>Recent From Searches</Text>
-
-          <Text style={styles.recentText}>{recentFrom.join(" • ")}</Text>
-        </View>
-      )}
-
-      {recentTo.length > 0 && (
-        <View style={styles.recentBox}>
-          <Text style={styles.recentTitle}>Recent To Searches</Text>
-
-          <Text style={styles.recentText}>{recentTo.join(" • ")}</Text>
-        </View>
-      )}
-
-      {nearestMessage !== "" && (
-        <View style={styles.nearestBox}>
-          <Text style={styles.nearestText}>{nearestMessage}</Text>
-        </View>
-      )}
 
       <Text style={styles.sectionTitle}>Available Routes</Text>
 
@@ -248,31 +307,110 @@ export default function PopBusScreen() {
               <Text style={styles.recommended}>Recommended Fastest Route</Text>
             )}
 
-            <View style={[styles.routeBar, { backgroundColor: bus.color }]} />
+            {bus.via ? (
+              // Two-leg journey via Sala
+              <>
+                <Text style={styles.routeTitle}>Via Sala Phra Kieo</Text>
+                <Text style={styles.routeStation}>
+                  {bus.stationsAway} total stops
+                </Text>
 
-            <Text style={styles.routeTitle}>Bus line {bus.route_number}</Text>
+                {/* Leg 1 */}
+                <View
+                  style={[styles.routeBar, { backgroundColor: bus.leg1.color }]}
+                />
+                <Text style={styles.routeTitle}>
+                  Take Bus Line {bus.leg1.route_number}
+                </Text>
+                <Text style={styles.routeStation}>
+                  {bus.leg1.stationsAway} stops from{" "}
+                  {STATION_DISPLAY_NAME[bus.leg1.from as Station] ??
+                    bus.leg1.from}{" "}
+                  to{" "}
+                  {STATION_DISPLAY_NAME[bus.leg1.to as Station] ?? bus.leg1.to}
+                </Text>
+                <Text style={{...styles.routeStops, paddingBottom: 15}}>
+                  {bus.leg1.sequence.map((stop: Station, idx: number) => {
+                    const isHighlighted =
+                      stop === bus.leg1.from || stop === bus.leg1.to;
+                    return (
+                      <Text
+                        key={idx}
+                        style={{
+                          fontWeight: isHighlighted ? "bold" : "normal",
+                        }}
+                      >
+                        {STATION_DISPLAY_NAME[stop] ?? stop}
+                        {idx !== bus.leg1.sequence.length - 1 && " → "}
+                      </Text>
+                    );
+                  })}
+                </Text>
 
-            <Text style={styles.routeStation}>
-              {bus.stationsAway} stops from {bus.from} to {bus.to}
-            </Text>
-
-            <Text style={styles.routeStops}>
-              {bus.stops.map((stop: string, idx: number) => {
-                const isHighlighted = stop === bus.from || stop === bus.to;
-
-                return (
-                  <Text
-                    key={idx}
-                    style={{
-                      fontWeight: isHighlighted ? "bold" : "normal",
-                    }}
-                  >
-                    {stop}
-                    {idx !== bus.stops.length - 1 && " → "}
-                  </Text>
-                );
-              })}
-            </Text>
+                {/* Leg 2 */}
+                <View
+                  style={[styles.routeBar, { backgroundColor: bus.leg2.color }]}
+                />
+                <Text style={styles.routeTitle}>
+                  Then take Bus Line {bus.leg2.route_number}
+                </Text>
+                <Text style={styles.routeStation}>
+                  {bus.leg2.stationsAway} stops from{" "}
+                  {STATION_DISPLAY_NAME[bus.leg2.from as Station] ??
+                    bus.leg2.from}{" "}
+                  to{" "}
+                  {STATION_DISPLAY_NAME[bus.leg2.to as Station] ?? bus.leg2.to}
+                </Text>
+                <Text style={styles.routeStops}>
+                  {bus.leg2.sequence.map((stop: Station, idx: number) => {
+                    const isHighlighted =
+                      stop === bus.leg2.from || stop === bus.leg2.to;
+                    return (
+                      <Text
+                        key={idx}
+                        style={{
+                          fontWeight: isHighlighted ? "bold" : "normal",
+                        }}
+                      >
+                        {STATION_DISPLAY_NAME[stop] ?? stop}
+                        {idx !== bus.leg2.sequence.length - 1 && " → "}
+                      </Text>
+                    );
+                  })}
+                </Text>
+              </>
+            ) : (
+              // Direct journey
+              <>
+                <View
+                  style={[styles.routeBar, { backgroundColor: bus.color }]}
+                />
+                <Text style={styles.routeTitle}>
+                  Bus Line {bus.route_number}
+                </Text>
+                <Text style={styles.routeStation}>
+                  {bus.stationsAway} stops from{" "}
+                  {STATION_DISPLAY_NAME[bus.from as Station] ?? bus.from} to{" "}
+                  {STATION_DISPLAY_NAME[bus.to as Station] ?? bus.to}
+                </Text>
+                <Text style={styles.routeStops}>
+                  {bus.sequence.map((stop: Station, idx: number) => {
+                    const isHighlighted = stop === bus.from || stop === bus.to;
+                    return (
+                      <Text
+                        key={idx}
+                        style={{
+                          fontWeight: isHighlighted ? "bold" : "normal",
+                        }}
+                      >
+                        {STATION_DISPLAY_NAME[stop] ?? stop}
+                        {idx !== bus.sequence.length - 1 && " → "}
+                      </Text>
+                    );
+                  })}
+                </Text>
+              </>
+            )}
 
             {!bus.available_at_saturday && (
               <Text style={styles.warning}>Not available on Saturday</Text>

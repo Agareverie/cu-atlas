@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Text,
   View,
+  Image,
 } from "react-native";
 
 import { Collapsible } from "@/components/ui/collapsible";
@@ -44,10 +45,21 @@ export default function HomeScreen() {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <View>
-        <Text style={styles.title}>Buildings</Text>
+      {/* HERO */}
+      <View style={styles.hero}>
+        <Image
+          source={{
+            uri: "https://cdn-icons-png.flaticon.com/512/854/854876.png",
+          }}
+          style={styles.heroImage}
+        />
 
-        <Text style={styles.subtitle}>List of buildings in Chulalongkorn University</Text>
+
+        <Text style={styles.title}>BUILDINGS LIST</Text>
+
+        <Text style={styles.subtitle}>
+          Understand what each building code means
+        </Text>
       </View>
       {buildings.map((building) => (
         <View key={building._id} style={styles.card}>
@@ -90,23 +102,42 @@ const styles = StyleSheet.create({
 
   content: {
     gap: 16,
-    paddingTop: 60,
     paddingBottom: 32,
   },
 
+  /* HERO */
   hero: {
-    marginTop: 60,
-    marginBottom: 30,
+    marginBottom: 15,
+    backgroundColor: "#d9468f",
+    paddingTop: 70,
+    paddingBottom: 40,
+    borderBottomLeftRadius: 35,
+    borderBottomRightRadius: 35,
+    alignItems: "center",
+    overflow: "hidden",
+  },
+
+  heroImage: {
+    position: "absolute",
+    width: 180,
+    height: 180,
+    opacity: 0.15,
+    right: -20,
+    top: 20,
   },
 
   title: {
-    color: COLORS.primary,
-    ...TYPOGRAPHY.hero,
+    color: "white",
+    fontSize: 38,
+    fontWeight: "900",
+    letterSpacing: 1,
   },
 
   subtitle: {
     marginTop: 8,
-    color: COLORS.muted,
+    color: "rgba(255,255,255,0.85)",
+    textAlign: "center",
+    paddingHorizontal: 20,
     ...TYPOGRAPHY.body,
   },
 

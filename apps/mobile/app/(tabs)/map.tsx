@@ -69,11 +69,11 @@ export default function MapPage() {
               <Text
                 style={{
                   backgroundColor: "white",
-                  paddingHorizontal: 5,
-                  paddingVertical: 4,
+                  paddingHorizontal: 4,
+                  paddingVertical: 2.5,
                   includeFontPadding: false,
                   fontSize: 8,
-                  borderRadius: 3,
+                  borderRadius: 4,
                   borderWidth: 1,
                   borderColor: "#ccc",
                   fontWeight: "800",

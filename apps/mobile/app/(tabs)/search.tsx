@@ -117,12 +117,10 @@ export default function SearchScreen() {
         <View style={styles.emptyCard}>
           <IconSymbol name="magnifyingglass" size={55} color="#d1d5db" />
 
-          <Text style={styles.emptyText}>
-            Search buildings to begin
-          </Text>
+          <Text style={styles.emptyText}>Search buildings to begin</Text>
 
           <Text style={styles.emptySubtext}>
-            Try searching ENG, SCI, MED or faculty names
+            Try searching ENG4, BRK, CHALE or faculty names
           </Text>
         </View>
       ) : filtered.length === 0 ? (
@@ -143,13 +141,9 @@ export default function SearchScreen() {
             </View>
 
             <View style={{ flex: 1 }}>
-              <Text style={styles.buildingName}>
-                {building.name_en}
-              </Text>
+              <Text style={styles.buildingName}>{building.name_en}</Text>
 
-              <Text style={styles.faculty}>
-                {building.faculty}
-              </Text>
+              <Text style={styles.faculty}>{building.faculty}</Text>
             </View>
           </View>
         ))
@@ -165,14 +159,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.background,
     paddingHorizontal:
-      screenWidth > 700
-        ? LAYOUT.screenPadding.wide
-        : LAYOUT.screenPadding.base,
+      screenWidth > 700 ? LAYOUT.screenPadding.wide : LAYOUT.screenPadding.base,
   },
 
   /* HERO */
   hero: {
-    marginBottom: 30,
+    marginBottom: 60,
     backgroundColor: "#d9468f",
     paddingTop: 70,
     paddingBottom: 40,

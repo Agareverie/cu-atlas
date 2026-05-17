@@ -1,40 +1,9 @@
 import { useEffect, useState } from "react";
 import { View, Text } from "react-native";
 import MapView, { Marker, Polygon } from "react-native-maps";
-
-type Building = {
-  code: string;
-  name_en: string;
-  faculty: string;
-  geometry: {
-    type: "Polygon";
-
-    coordinates: number[][][];
-  };
-};
-
-const FACULTY_COLOR_RGB: Record<string, number[]> = {
-  Engineering: [164, 49, 42], // Firebrick
-  Arts: [128, 128, 128], // Grey
-  Science: [206, 191, 26], // Yellow
-  Architecture: [152, 53, 48], // Brown
-  Economics: [249, 217, 73], // Gold
-  "Political Science": [0, 0, 0], // Black
-  "Sports Science": [239, 134, 51], // Orange
-  Other: [245, 194, 203], // Pink
-};
-
-const facultyFillColor = (building: Building) => {
-  const rgbArray =
-    FACULTY_COLOR_RGB[building.faculty] ?? FACULTY_COLOR_RGB["Other"];
-  return `rgba(${rgbArray[0]}, ${rgbArray[1]}, ${rgbArray[2]}, 0.25)`;
-};
-
-const facultyStrokeColor = (building: Building) => {
-  const rgbArray =
-    FACULTY_COLOR_RGB[building.faculty] ?? FACULTY_COLOR_RGB["Other"];
-  return `rgb(${rgbArray[0]}, ${rgbArray[1]}, ${rgbArray[2]})`;
-};
+import { Building } from "@/types/building";
+import { facultyFillColor, facultyStrokeColor } from "@/utils/faculty-colors";
+import { getCentroid } from "@/utils/map-coordinates";
 
 export default function MapPage() {
   const [buildings, setBuildings] = useState<Building[]>([]);
@@ -53,7 +22,7 @@ export default function MapPage() {
       style={{ flex: 1 }}
       initialRegion={{
         latitude: 13.7393,
-        longitude: 100.534,
+        longitude: 100.532,
         latitudeDelta: 0.003,
         longitudeDelta: 0.003,
       }}
@@ -69,23 +38,9 @@ export default function MapPage() {
       ]}
     >
       {buildings.map((building) => {
-        const coordinates = building.geometry.coordinates[0].map(
-          ([longitude, latitude]) => ({
-            latitude,
-            longitude,
-          }),
+        const [centerLatitude, centerLongitude] = getCentroid(
+          building.geometry.coordinates[0],
         );
-
-        const center = coordinates.reduce(
-          (acc, coord) => ({
-            latitude: acc.latitude + coord.latitude,
-            longitude: acc.longitude + coord.longitude,
-          }),
-          { latitude: 0, longitude: 0 },
-        );
-
-        center.latitude /= coordinates.length;
-        center.longitude /= coordinates.length;
 
         return (
           <View key={`${building.code}-view`}>
@@ -94,22 +49,34 @@ export default function MapPage() {
               fillColor={facultyFillColor(building)}
               strokeColor={facultyStrokeColor(building)}
               strokeWidth={2}
-              coordinates={coordinates}
+              coordinates={building.geometry.coordinates[0].map(
+                ([longitude, latitude]) => ({
+                  latitude,
+                  longitude,
+                }),
+              )}
             />
 
             <Marker
-              coordinate={center}
+              coordinate={{
+                latitude: centerLatitude,
+                longitude: centerLongitude,
+              }}
               key={`${building.code}-marker`}
               title={building.name_en}
+              anchor={{ x: 0.5, y: 0.25 }}
             >
               <Text
                 style={{
                   backgroundColor: "white",
-                  paddingHorizontal: 6,
-                  paddingVertical: 2,
+                  paddingHorizontal: 5,
+                  paddingVertical: 4,
                   includeFontPadding: false,
-                  fontSize: 9,
-                  fontWeight: "400",
+                  fontSize: 8,
+                  borderRadius: 3,
+                  borderWidth: 1,
+                  borderColor: "#ccc",
+                  fontWeight: "800",
                 }}
               >
                 {building.code}

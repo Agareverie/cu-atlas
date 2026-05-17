@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   View,
@@ -10,6 +10,7 @@ import {
   ActivityIndicator,
   Dimensions,
   Image,
+  Platform,
 } from "react-native";
 
 import { IconSymbol } from "@/components/ui/icon-symbol";
@@ -17,135 +18,9 @@ import { COLORS } from "@/theme/colors";
 import { SHADOWS } from "@/theme/shadows";
 import { LAYOUT } from "@/theme/layout";
 import { TYPOGRAPHY } from "@/theme/typography";
+import { Route } from "@/types/route";
 
 const screenWidth = Dimensions.get("window").width;
-
-const BUS_ROUTES = [
-  {
-    line: "Bus Line 1",
-    available: true,
-    color: "#ef4444",
-    stops: [
-      "Sala Phra Kieo",
-      "Political Science",
-      "Patumwan Demonstration School",
-      "Veterinary Science",
-      "Chalerm Phao Junction",
-      "Lido",
-      "Pharmaceutical Sciences",
-      "Triamudom Suksa School",
-      "Architecture",
-      "Arts",
-      "Engineering",
-    ],
-  },
-
-  {
-    line: "Bus Line 2",
-    available: true,
-    color: "#3b82f6",
-    stops: [
-      "Sala Phra Kieo",
-      "Economics",
-      "Science",
-      "Education",
-      "CU Demonstration Elementary School",
-      "Chamchuri 9",
-      "Chulalongkorn Stadium",
-      "Dhamma Center",
-      "Witthayaphatthana Building",
-      "Allied Health Sciences",
-      "BTS National Stadium",
-      "Chula Phat 13",
-      "Student Dormitory",
-      "Office of the University",
-      "Architecture",
-      "Arts",
-      "Engineering",
-    ],
-  },
-
-  {
-    line: "Bus Line 3",
-    available: false,
-    color: "#22c55e",
-    stops: [
-      "Sala Phra Kieo",
-      "Political Science",
-      "Faculty of Medicine",
-      "Economics",
-      "Science",
-      "Architecture",
-      "Arts",
-      "Engineering",
-    ],
-  },
-
-  {
-    line: "Bus Line 4",
-    available: false,
-    color: "#f59e0b",
-    stops: [
-      "Sala Phra Kieo",
-      "Political Science",
-      "Patumwan Demonstration School",
-      "Veterinary Science",
-      "Chalerm Phao Junction",
-      "Lido",
-      "Pharmaceutical Sciences",
-      "Education",
-      "CU Demonstration Elementary School",
-      "CU Demonstration Secondary School",
-      "U-Center",
-      "Law",
-      "Architecture",
-      "Arts",
-      "Engineering",
-    ],
-  },
-
-  {
-    line: "Bus Line 5",
-    available: false,
-    color: "#8b5cf6",
-    stops: [
-      "CU iHouse",
-      "Dhamma Center",
-      "Office of the University",
-      "Architecture",
-      "Arts",
-      "Engineering",
-      "Sala Phra Kieo",
-      "Economics",
-      "Science",
-      "Communication Arts",
-      "CU Demonstration Secondary School",
-      "Chamchuri 9",
-      "Samyan Market",
-      "I'm Park",
-    ],
-  },
-
-  {
-    line: "Bus Line 6",
-    available: false,
-    color: "#ec4899",
-    stops: [
-      "Stadium One",
-      "CU iHouse",
-      "I'm Park",
-      "CU Centenary Park",
-      "Samyan Market",
-      "Chamchuri 9",
-      "Law",
-      "Samyan Mitrtown",
-      "Communication Arts",
-      "Chamchuri 5",
-      "Student Dormitory",
-      "BTS National Stadium",
-    ],
-  },
-];
 
 export default function PopBusScreen() {
   const [fromLocation, setFromLocation] = useState("");
@@ -159,67 +34,47 @@ export default function PopBusScreen() {
 
   const [nearestMessage, setNearestMessage] = useState("");
 
-  const aliases: any = {
-    BRK: "Arts",
-    CHALE: "Chula Phat 13",
-    MTBLD: "Faculty of Medicine",
-    SCI: "Science",
-    EN: "Engineering",
-    ENG: "Engineering",
-    COMM: "Communication Arts",
-    MED: "Faculty of Medicine",
-    MEDICINE: "Faculty of Medicine",
-  };
+  const [routes, setRoutes] = useState<Route[]>([]);
 
-  const nearestStations: any = {
-    "Boromrajakumari Building": "Arts",
-    "Communication Arts Building": "Communication Arts",
-    "Mahit Building": "Faculty of Medicine",
-    "Science Building": "Science",
-    "Engineering Building": "Engineering",
-    "Architecture Building": "Architecture",
-    "Medical Building": "Faculty of Medicine",
-    Medicine: "Faculty of Medicine",
-    "Chula Phat 14": "Chula Phat 13",
-    "Chula Phat 15": "Chula Phat 13",
-  };
+  useEffect(() => {
+    fetch(
+      Platform.OS === "android"
+        ? "http://10.0.2.2:3000/routes"
+        : "http://localhost:3000/routes",
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setRoutes(data.routes);
+      })
+      .catch((err) => {
+        setRoutes([]);
+      });
+  }, []);
 
   const allStations = Array.from(
-    new Set(BUS_ROUTES.flatMap((route) => route.stops)),
+    new Set(routes.flatMap((route) => route.stops)),
   );
 
   const fromSuggestions = allStations.filter(
     (station) =>
       station.toLowerCase().includes(fromLocation.toLowerCase()) &&
       fromLocation.length > 0,
-  );
+  ).toSorted();
 
   const toSuggestions = allStations.filter(
     (station) =>
       station.toLowerCase().includes(toLocation.toLowerCase()) &&
       toLocation.length > 0,
-  );
+  ).toSorted();
 
   const normalizeInput = (input: string) => {
     if (!input) {
-      return "Sala Phra Kieo";
-    }
-
-    const upper = input.toUpperCase();
-
-    if (aliases[upper]) {
-      return aliases[upper];
-    }
-
-    if (nearestStations[input]) {
-      setNearestMessage(`Nearest POP Bus station: ${nearestStations[input]}`);
-
-      return nearestStations[input];
+      return "sala";
     }
 
     const lowerInput = input.toLowerCase();
 
-    for (const station of allStations) {
+    for (const station of allStations.toSorted()) {
       const lowerStation = station.toLowerCase();
 
       if (
@@ -245,13 +100,13 @@ export default function PopBusScreen() {
 
       const matchedRoutes: any[] = [];
 
-      for (const bus of BUS_ROUTES) {
+      for (const bus of routes) {
         const fromIndex = bus.stops.findIndex((stop) =>
-          stop.toLowerCase().includes(from.toLowerCase()),
+          stop.toLowerCase() === from.toLowerCase(),
         );
 
         const toIndex = bus.stops.findIndex((stop) =>
-          stop.toLowerCase().includes(to.toLowerCase()),
+          stop.toLowerCase() === to.toLowerCase(),
         );
 
         if (fromIndex !== -1 && toIndex !== -1 && fromIndex !== toIndex) {
@@ -395,7 +250,7 @@ export default function PopBusScreen() {
 
             <View style={[styles.routeBar, { backgroundColor: bus.color }]} />
 
-            <Text style={styles.routeTitle}>{bus.line}</Text>
+            <Text style={styles.routeTitle}>Bus line {bus.route_number}</Text>
 
             <Text style={styles.routeStation}>
               {bus.stationsAway} stops from {bus.from} to {bus.to}
@@ -419,7 +274,7 @@ export default function PopBusScreen() {
               })}
             </Text>
 
-            {!bus.available && (
+            {!bus.available_at_saturday && (
               <Text style={styles.warning}>Not available on Saturday</Text>
             )}
           </View>

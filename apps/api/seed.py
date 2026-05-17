@@ -639,7 +639,97 @@ buildings.insert_many(
                 ],
             },
         },
-        # CHULAPAT
+        # SPORTS SCIENCE & CHULAPAT
+        {
+            "code": "BSB2",
+            "name_en": "Borommaratchonnani Srisataphat Building",
+            "name_th": "อาคารบรมราชชนนีศรีศตพรรษ",
+            "pronunciation_th": "ah-caan-bo-ro-ma-ra-cha-chon-na-nee-see-sa-ta-pat",
+            "faculty": "Sports Science",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [100.5283725, 13.7442825],
+                        [100.528485, 13.7442609],
+                        [100.5284932, 13.7442973],
+                        [100.5286695, 13.7442665],
+                        [100.5286626, 13.7442286],
+                        [100.5287746, 13.7442096],
+                        [100.528764, 13.7441493],
+                        [100.5287957, 13.7441436],
+                        [100.5287695, 13.7440002],
+                        [100.5286233, 13.7440263],
+                        [100.5286167, 13.7439883],
+                        [100.5284406, 13.7440189],
+                        [100.5284467, 13.7440555],
+                        [100.5283645, 13.7440701],
+                        [100.5283926, 13.7442199],
+                        [100.5283643, 13.7442244],
+                        [100.5283725, 13.7442825],
+                    ]
+                ],
+            },
+        },
+        {
+            "code": "CUSC",
+            "name_en": "Chulalongkorn University Sports Center",
+            "name_th": "ศูนย์กีฬาแห่งจุฬาลงกรณ์มหาวิทยาลัย",
+            "pronunciation_th": "soon-gee-la-hang-ju-la-long-gorn-ma-ha-wit-ta-ya-lai",
+            "faculty": "Sports Science",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [100.5261863, 13.739215],
+                        [100.5266155, 13.7391381],
+                        [100.5265149, 13.7385816],
+                        [100.5268798, 13.7385165],
+                        [100.5268624, 13.7384122],
+                        [100.5260669, 13.7385543],
+                        [100.5261863, 13.739215],
+                    ]
+                ],
+            },
+        },
+        {
+            "code": "CUSCS",
+            "name_en": "CU Sports Center Swimming Pool",
+            "name_th": "สระว่ายน้ำ ศูนย์กีฬาแห่งจุฬาลงกรณ์มหาวิทยาลัย",
+            "pronunciation_th": "sa-wai-naam soon-gee-la-hang-ju-la-long-gorn-ma-ha-wit-ta-ya-lai",
+            "faculty": "Sports Science",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [100.5266102, 13.7391407],
+                        [100.5265136, 13.738579],
+                        [100.5268812, 13.7385165],
+                        [100.5269831, 13.7390755],
+                        [100.5266102, 13.7391407],
+                    ]
+                ],
+            },
+        },
+        {
+            "code": "CUSCT",
+            "name_en": "CU Sports Center Tennis Court",
+            "name_th": "สนามเทนนิส ศูนย์กีฬาแห่งจุฬาลงกรณ์มหาวิทยาลัย",
+            "pronunciation_th": "sa-naam-tennis soon-gee-la-hang-ju-la-long-gorn-ma-ha-wit-ta-ya-lai",
+            "faculty": "Sports Science",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [100.5257381, 13.7409056],
+                        [100.5258741, 13.7408868],
+                        [100.5258475, 13.7407203],
+                        [100.5257121, 13.7407391],
+                        [100.5257381, 13.7409056],
+                    ]
+                ],
+            },
+        },
         {
             "code": "CUP7",
             "name_en": "Chulapat 7",
@@ -663,6 +753,25 @@ buildings.insert_many(
                         [100.5274732, 13.7433476],
                         [100.5265512, 13.7434887],
                         [100.5265706, 13.7436019],
+                    ]
+                ],
+            },
+        },
+        {
+            "code": "CUP8",
+            "name_en": "Chulapat 8",
+            "name_th": "จุฬาพัฒน์ 8",
+            "pronunciation_th": "ju-la-pad-padd",
+            "faculty": "Sports Science",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [100.5261563, 13.7437184],
+                        [100.5265626, 13.7436555],
+                        [100.5265292, 13.7434435],
+                        [100.526124, 13.7435073],
+                        [100.5261563, 13.7437184],
                     ]
                 ],
             },

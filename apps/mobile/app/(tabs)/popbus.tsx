@@ -468,7 +468,7 @@ const styles = StyleSheet.create({
 
   title: {
     color: "white",
-    fontSize: 44,
+    fontSize: 38,
     fontWeight: "900",
     letterSpacing: 1,
   },
@@ -476,6 +476,8 @@ const styles = StyleSheet.create({
   subtitle: {
     marginTop: 8,
     color: "rgba(255,255,255,0.85)",
+    textAlign: "center",
+    paddingHorizontal: 20,
     ...TYPOGRAPHY.body,
   },
 

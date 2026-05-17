@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
 
   /* HERO */
   hero: {
-    marginBottom: 60,
+    marginBottom: 50,
     backgroundColor: "#d9468f",
     paddingTop: 70,
     paddingBottom: 40,
@@ -176,8 +176,8 @@ const styles = StyleSheet.create({
 
   heroImage: {
     position: "absolute",
-    width: 170,
-    height: 170,
+    width: 180,
+    height: 180,
     opacity: 0.15,
     right: -20,
     top: 20,

@@ -8,6 +8,8 @@ const FACULTY_COLOR_RGB: Record<string, number[]> = {
   Economics: [249, 217, 73], // Gold
   "Political Science": [0, 0, 0], // Black
   "Sports Science": [239, 134, 51], // Orange
+  "Communication Arts": [0, 0, 177], // Dark Blue
+  Law: [190, 190, 190], // White
   Other: [245, 194, 203], // Pink
 };
 

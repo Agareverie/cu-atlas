@@ -474,6 +474,46 @@ buildings.insert_many(
                 ],
             },
         },
+        # LAW
+        {
+            "code": "PINIT",
+            "name_en": "Phinitprachanat",
+            "name_th": "พินิตประชานาถ",
+            "pronunciation_th": "pi-nit-pra-cha-naad",
+            "faculty": "Law",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [100.5282109, 13.7361509],
+                        [100.5284444, 13.7361116],
+                        [100.5283624, 13.7355979],
+                        [100.5281289, 13.7356323],
+                        [100.5282109, 13.7361509],
+                    ]
+                ],
+            },
+        },
+        # COMMUNICATION ARTS
+        {
+            "code": "MKSW",
+            "name_en": "Mongkutsamatiwong",
+            "name_th": "มงกุฎสมมติวงศ์",
+            "pronunciation_th": "mong-gud-som-ma-ti-wong",
+            "faculty": "Communication Arts",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [100.5285368, 13.7362315],
+                        [100.5288188, 13.7361763],
+                        [100.528762, 13.7358923],
+                        [100.528482, 13.7359445],
+                        [100.5285368, 13.7362315],
+                    ]
+                ],
+            },
+        },
         # INTEGRATED INNOVATION
         {
             "code": "CHALE",

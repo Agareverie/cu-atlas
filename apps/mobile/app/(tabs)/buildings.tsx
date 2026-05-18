@@ -8,6 +8,7 @@ import {
   View,
   Image,
 } from "react-native";
+import Head from "expo-router/head";
 
 import { Collapsible } from "@/components/ui/collapsible";
 import { ThemedText } from "@/components/themed-text";
@@ -44,51 +45,58 @@ export default function HomeScreen() {
   }, []);
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      {/* HERO */}
-      <View style={styles.hero}>
-        <Image
-          source={{
-            uri: "https://cdn-icons-png.flaticon.com/512/854/854876.png",
-          }}
-          style={styles.heroImage}
-        />
+    <>
+      <Head>
+        <title>Buildings — CU Atlas</title>
+      </Head>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={styles.content}
+      >
+        {/* HERO */}
+        <View style={styles.hero}>
+          <Image
+            source={{
+              uri: "https://cdn-icons-png.flaticon.com/512/854/854876.png",
+            }}
+            style={styles.heroImage}
+          />
 
+          <Text style={styles.title}>BUILDINGS LIST</Text>
 
-        <Text style={styles.title}>BUILDINGS LIST</Text>
-
-        <Text style={styles.subtitle}>
-          Understand what each building code means
-        </Text>
-      </View>
-      {buildings.map((building) => (
-        <View key={building._id} style={styles.card}>
-          <Collapsible title={building.code}>
-            <View style={styles.cardContent}>
-              <ThemedText type="defaultSemiBold" style={styles.englishName}>
-                {building.name_en}
-              </ThemedText>
-
-              <ThemedText style={styles.thaiName}>
-                {building.name_th}
-              </ThemedText>
-
-              <Text style={styles.pronunciation}>
-                ({building.pronunciation_th})
-              </Text>
-
-              <ThemedText style={styles.faculty}>
-                {building.faculty === "BASCii"
-                  ? "School of Integrated Innovation"
-                  : building.faculty === "Other"
-                    ? "Other"
-                    : `Faculty of ${building.faculty}`}
-              </ThemedText>
-            </View>
-          </Collapsible>
+          <Text style={styles.subtitle}>
+            Understand what each building code means
+          </Text>
         </View>
-      ))}
-    </ScrollView>
+        {buildings.map((building) => (
+          <View key={building._id} style={styles.card}>
+            <Collapsible title={building.code}>
+              <View style={styles.cardContent}>
+                <ThemedText type="defaultSemiBold" style={styles.englishName}>
+                  {building.name_en}
+                </ThemedText>
+
+                <ThemedText style={styles.thaiName}>
+                  {building.name_th}
+                </ThemedText>
+
+                <Text style={styles.pronunciation}>
+                  ({building.pronunciation_th})
+                </Text>
+
+                <ThemedText style={styles.faculty}>
+                  {building.faculty === "BASCii"
+                    ? "School of Integrated Innovation"
+                    : building.faculty === "Other"
+                      ? "Other"
+                      : `Faculty of ${building.faculty}`}
+                </ThemedText>
+              </View>
+            </Collapsible>
+          </View>
+        ))}
+      </ScrollView>
+    </>
   );
 }
 

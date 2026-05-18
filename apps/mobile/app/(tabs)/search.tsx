@@ -10,6 +10,7 @@ import {
   Platform,
   Image,
 } from "react-native";
+import Head from "expo-router/head";
 
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { COLORS } from "@/theme/colors";
@@ -65,92 +66,97 @@ export default function SearchScreen() {
         );
 
   return (
-    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-      {/* HERO */}
-      <View style={styles.hero}>
-        <Image
-          source={{
-            uri: "https://cdn-icons-png.flaticon.com/512/854/854878.png",
-          }}
-          style={styles.heroImage}
-        />
-
-        <Text style={styles.title}>BUILDING SEARCH</Text>
-
-        <Text style={styles.subtitle}>
-          Find any building across campus instantly
-        </Text>
-      </View>
-
-      {/* SEARCH BAR */}
-      <View style={styles.searchCard}>
-        <View style={styles.searchRow}>
-          <IconSymbol name="magnifyingglass" size={22} color="#6b7280" />
-
-          <TextInput
-            placeholder="Search building, faculty or abbreviation"
-            value={search}
-            onChangeText={setSearch}
-            style={styles.input}
-            placeholderTextColor="#9ca3af"
+    <>
+      <Head>
+        <title>Search — CU Atlas</title>
+      </Head>
+      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+        {/* HERO */}
+        <View style={styles.hero}>
+          <Image
+            source={{
+              uri: "https://cdn-icons-png.flaticon.com/512/854/854878.png",
+            }}
+            style={styles.heroImage}
           />
+
+          <Text style={styles.title}>BUILDING SEARCH</Text>
+
+          <Text style={styles.subtitle}>
+            Find any building across campus instantly
+          </Text>
         </View>
-      </View>
 
-      {/* RESULTS */}
-      <Text style={styles.sectionTitle}>Buildings</Text>
+        {/* SEARCH BAR */}
+        <View style={styles.searchCard}>
+          <View style={styles.searchRow}>
+            <IconSymbol name="magnifyingglass" size={22} color="#6b7280" />
 
-      {loading ? (
-        <>
-          {[1, 2, 3].map((item) => (
-            <View key={item} style={styles.skeletonCard}>
-              <View style={styles.skeletonCode} />
+            <TextInput
+              placeholder="Search building, faculty or abbreviation"
+              value={search}
+              onChangeText={setSearch}
+              style={styles.input}
+              placeholderTextColor="#9ca3af"
+            />
+          </View>
+        </View>
+
+        {/* RESULTS */}
+        <Text style={styles.sectionTitle}>Buildings</Text>
+
+        {loading ? (
+          <>
+            {[1, 2, 3].map((item) => (
+              <View key={item} style={styles.skeletonCard}>
+                <View style={styles.skeletonCode} />
+
+                <View style={{ flex: 1 }}>
+                  <View style={styles.skeletonLineLarge} />
+                  <View style={styles.skeletonLineSmall} />
+                </View>
+              </View>
+            ))}
+          </>
+        ) : search === "" ? (
+          <View style={styles.emptyCard}>
+            <IconSymbol name="magnifyingglass" size={55} color="#d1d5db" />
+
+            <Text style={styles.emptyText}>Search buildings to begin</Text>
+
+            <Text style={styles.emptySubtext}>
+              Try searching ENG4, BRK, CHALE or faculty names
+            </Text>
+          </View>
+        ) : filtered.length === 0 ? (
+          <View style={styles.emptyCard}>
+            <IconSymbol name="nosign" size={55} color="#d1d5db" />
+
+            <Text style={styles.emptyText}>No buildings match</Text>
+
+            <Text style={styles.emptySubtext}>
+              Check spelling or try another keyword
+            </Text>
+          </View>
+        ) : (
+          filtered.map((building, index) => (
+            <View key={index} style={styles.card}>
+              <View style={styles.codeBox}>
+                <Text style={styles.code}>{building.code}</Text>
+              </View>
 
               <View style={{ flex: 1 }}>
-                <View style={styles.skeletonLineLarge} />
-                <View style={styles.skeletonLineSmall} />
+                <Text style={styles.buildingName}>{building.name_en}</Text>
+
+                <Text style={styles.faculty}>{building.faculty}</Text>
               </View>
             </View>
-          ))}
-        </>
-      ) : search === "" ? (
-        <View style={styles.emptyCard}>
-          <IconSymbol name="magnifyingglass" size={55} color="#d1d5db" />
+          ))
+        )}
 
-          <Text style={styles.emptyText}>Search buildings to begin</Text>
-
-          <Text style={styles.emptySubtext}>
-            Try searching ENG4, BRK, CHALE or faculty names
-          </Text>
-        </View>
-      ) : filtered.length === 0 ? (
-        <View style={styles.emptyCard}>
-          <IconSymbol name="nosign" size={55} color="#d1d5db" />
-
-          <Text style={styles.emptyText}>No buildings match</Text>
-
-          <Text style={styles.emptySubtext}>
-            Check spelling or try another keyword
-          </Text>
-        </View>
-      ) : (
-        filtered.map((building, index) => (
-          <View key={index} style={styles.card}>
-            <View style={styles.codeBox}>
-              <Text style={styles.code}>{building.code}</Text>
-            </View>
-
-            <View style={{ flex: 1 }}>
-              <Text style={styles.buildingName}>{building.name_en}</Text>
-
-              <Text style={styles.faculty}>{building.faculty}</Text>
-            </View>
-          </View>
-        ))
-      )}
-
-      <View style={{ height: 120 }} />
-    </ScrollView>
+        <View style={{ height: 120 }} />
+      </ScrollView>
+    </>
   );
 }
 

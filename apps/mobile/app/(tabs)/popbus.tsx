@@ -20,6 +20,7 @@ import { LAYOUT } from "@/theme/layout";
 import { TYPOGRAPHY } from "@/theme/typography";
 import { STATION_DISPLAY_NAME } from "@/utils/station-names";
 import { Route, Station } from "@/types/route";
+import Head from "expo-router/head";
 
 const screenWidth = Dimensions.get("window").width;
 
@@ -214,227 +215,235 @@ export default function PopBusScreen() {
   };
 
   return (
-    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-      <View style={styles.hero}>
-        <Image
-          source={{
-            uri: "https://cdn-icons-png.flaticon.com/512/3448/3448339.png",
-          }}
-          style={styles.busBackground}
-        />
-
-        <Text style={styles.title}>CU POP BUS</Text>
-
-        <Text style={styles.subtitle}>Smart campus transportation system</Text>
-      </View>
-
-      <View style={styles.searchCard}>
-        <View style={styles.inputGroup}>
-          <IconSymbol name="pin" size={20} color="#ef4444" />
-
-          <TextInput
-            placeholder="From (default: Sala Phra Kieo)"
-            value={fromLocation}
-            onChangeText={(text) => {
-              setFromLocation(text);
-              setFromKey(""); // clear key when typing manually
+    <>
+      <Head>
+        <title>CU Pop Bus — CU Atlas</title>
+      </Head>
+      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+        <View style={styles.hero}>
+          <Image
+            source={{
+              uri: "https://cdn-icons-png.flaticon.com/512/3448/3448339.png",
             }}
-            style={styles.input}
+            style={styles.busBackground}
           />
+
+          <Text style={styles.title}>CU POP BUS</Text>
+
+          <Text style={styles.subtitle}>
+            Smart campus transportation system
+          </Text>
         </View>
 
-        {fromSuggestions.slice(0, 4).map((item, index) => (
-          <TouchableOpacity
-            key={index}
-            style={styles.suggestion}
-            onPress={() => {
-              setFromLocation(STATION_DISPLAY_NAME[item as Station] ?? item);
-              setFromKey(item);
-            }}
-          >
-            <Text>{STATION_DISPLAY_NAME[item as Station] ?? item}</Text>
+        <View style={styles.searchCard}>
+          <View style={styles.inputGroup}>
+            <IconSymbol name="pin" size={20} color="#ef4444" />
+
+            <TextInput
+              placeholder="From (default: Sala Phra Kieo)"
+              value={fromLocation}
+              onChangeText={(text) => {
+                setFromLocation(text);
+                setFromKey(""); // clear key when typing manually
+              }}
+              style={styles.input}
+            />
+          </View>
+
+          {fromSuggestions.slice(0, 4).map((item, index) => (
+            <TouchableOpacity
+              key={index}
+              style={styles.suggestion}
+              onPress={() => {
+                setFromLocation(STATION_DISPLAY_NAME[item as Station] ?? item);
+                setFromKey(item);
+              }}
+            >
+              <Text>{STATION_DISPLAY_NAME[item as Station] ?? item}</Text>
+            </TouchableOpacity>
+          ))}
+
+          <View style={styles.inputGroup}>
+            <IconSymbol name="flag" size={20} color="#3b82f6" />
+
+            <TextInput
+              placeholder="To"
+              value={toLocation}
+              onChangeText={(text) => {
+                setToLocation(text);
+                setToKey("");
+              }}
+              style={styles.input}
+            />
+          </View>
+
+          {toSuggestions.slice(0, 4).map((item, index) => (
+            <TouchableOpacity
+              key={index}
+              style={styles.suggestion}
+              onPress={() => {
+                setToLocation(STATION_DISPLAY_NAME[item as Station] ?? item);
+                setToKey(item);
+              }}
+            >
+              <Text>{STATION_DISPLAY_NAME[item as Station] ?? item}</Text>
+            </TouchableOpacity>
+          ))}
+
+          <TouchableOpacity style={styles.button} onPress={findRoutes}>
+            <Text style={styles.buttonText}>Find Routes</Text>
           </TouchableOpacity>
-        ))}
-
-        <View style={styles.inputGroup}>
-          <IconSymbol name="flag" size={20} color="#3b82f6" />
-
-          <TextInput
-            placeholder="To"
-            value={toLocation}
-            onChangeText={(text) => {
-              setToLocation(text);
-              setToKey("");
-            }}
-            style={styles.input}
-          />
         </View>
 
-        {toSuggestions.slice(0, 4).map((item, index) => (
-          <TouchableOpacity
-            key={index}
-            style={styles.suggestion}
-            onPress={() => {
-              setToLocation(STATION_DISPLAY_NAME[item as Station] ?? item);
-              setToKey(item);
-            }}
-          >
-            <Text>{STATION_DISPLAY_NAME[item as Station] ?? item}</Text>
-          </TouchableOpacity>
-        ))}
+        <Text style={styles.sectionTitle}>Available Routes</Text>
 
-        <TouchableOpacity style={styles.button} onPress={findRoutes}>
-          <Text style={styles.buttonText}>Find Routes</Text>
-        </TouchableOpacity>
-      </View>
+        {loading ? (
+          <ActivityIndicator size="large" color="#111827" />
+        ) : results.length === 0 ? (
+          <View style={styles.emptyCard}>
+            <IconSymbol name="bus" size={55} color="#d1d5db" />
 
-      <Text style={styles.sectionTitle}>Available Routes</Text>
+            <Text style={styles.emptyText}>Search routes to begin</Text>
+          </View>
+        ) : (
+          results.map((bus, index) => {
+            const notAvailableSaturday = bus.via
+              ? !bus.leg1.available_at_saturday ||
+                !bus.leg2.available_at_saturday
+              : !bus.available_at_saturday;
+            return (
+              <View key={index} style={styles.routeCard}>
+                {index === 0 && (
+                  <Text style={styles.recommended}>
+                    Recommended Fastest Route
+                  </Text>
+                )}
 
-      {loading ? (
-        <ActivityIndicator size="large" color="#111827" />
-      ) : results.length === 0 ? (
-        <View style={styles.emptyCard}>
-          <IconSymbol name="bus" size={55} color="#d1d5db" />
+                {bus.via ? (
+                  // Two-leg journey via Sala
+                  <>
+                    <Text style={styles.routeTitle}>Via Sala Phra Kieo</Text>
+                    <Text style={styles.routeStation}>
+                      {bus.stationsAway} total stops
+                    </Text>
 
-          <Text style={styles.emptyText}>Search routes to begin</Text>
-        </View>
-      ) : (
-        results.map((bus, index) => {
-          const notAvailableSaturday = bus.via
-            ? !bus.leg1.available_at_saturday || !bus.leg2.available_at_saturday
-            : !bus.available_at_saturday;
-          return (
-            <View key={index} style={styles.routeCard}>
-              {index === 0 && (
-                <Text style={styles.recommended}>
-                  Recommended Fastest Route
-                </Text>
-              )}
+                    {/* Leg 1 */}
+                    <View
+                      style={[
+                        styles.routeBar,
+                        { backgroundColor: bus.leg1.color },
+                      ]}
+                    />
+                    <Text style={styles.routeTitle}>
+                      Board Bus Line {bus.leg1.route_number}
+                    </Text>
+                    <Text style={styles.routeStation}>
+                      {bus.leg1.stationsAway} stops from{" "}
+                      {STATION_DISPLAY_NAME[bus.leg1.from as Station] ??
+                        bus.leg1.from}{" "}
+                      to{" "}
+                      {STATION_DISPLAY_NAME[bus.leg1.to as Station] ??
+                        bus.leg1.to}
+                    </Text>
+                    <Text style={{ ...styles.routeStops, paddingBottom: 15 }}>
+                      {bus.leg1.sequence.map((stop: Station, idx: number) => {
+                        const isHighlighted =
+                          stop === bus.leg1.from || stop === bus.leg1.to;
+                        return (
+                          <Text
+                            key={idx}
+                            style={{
+                              fontWeight: isHighlighted ? "bold" : "normal",
+                            }}
+                          >
+                            {STATION_DISPLAY_NAME[stop] ?? stop}
+                            {idx !== bus.leg1.sequence.length - 1 && " → "}
+                          </Text>
+                        );
+                      })}
+                    </Text>
 
-              {bus.via ? (
-                // Two-leg journey via Sala
-                <>
-                  <Text style={styles.routeTitle}>Via Sala Phra Kieo</Text>
-                  <Text style={styles.routeStation}>
-                    {bus.stationsAway} total stops
-                  </Text>
+                    {/* Leg 2 */}
+                    <View
+                      style={[
+                        styles.routeBar,
+                        { backgroundColor: bus.leg2.color },
+                      ]}
+                    />
+                    <Text style={styles.routeTitle}>
+                      Transfer to Bus Line {bus.leg2.route_number}
+                    </Text>
+                    <Text style={styles.routeStation}>
+                      {bus.leg2.stationsAway} stops from{" "}
+                      {STATION_DISPLAY_NAME[bus.leg2.from as Station] ??
+                        bus.leg2.from}{" "}
+                      to{" "}
+                      {STATION_DISPLAY_NAME[bus.leg2.to as Station] ??
+                        bus.leg2.to}
+                    </Text>
+                    <Text style={styles.routeStops}>
+                      {bus.leg2.sequence.map((stop: Station, idx: number) => {
+                        const isHighlighted =
+                          stop === bus.leg2.from || stop === bus.leg2.to;
+                        return (
+                          <Text
+                            key={idx}
+                            style={{
+                              fontWeight: isHighlighted ? "bold" : "normal",
+                            }}
+                          >
+                            {STATION_DISPLAY_NAME[stop] ?? stop}
+                            {idx !== bus.leg2.sequence.length - 1 && " → "}
+                          </Text>
+                        );
+                      })}
+                    </Text>
+                  </>
+                ) : (
+                  // Direct journey
+                  <>
+                    <View
+                      style={[styles.routeBar, { backgroundColor: bus.color }]}
+                    />
+                    <Text style={styles.routeTitle}>
+                      Bus Line {bus.route_number}
+                    </Text>
+                    <Text style={styles.routeStation}>
+                      {bus.stationsAway} stops from{" "}
+                      {STATION_DISPLAY_NAME[bus.from as Station] ?? bus.from} to{" "}
+                      {STATION_DISPLAY_NAME[bus.to as Station] ?? bus.to}
+                    </Text>
+                    <Text style={styles.routeStops}>
+                      {bus.sequence.map((stop: Station, idx: number) => {
+                        const isHighlighted =
+                          stop === bus.from || stop === bus.to;
+                        return (
+                          <Text
+                            key={idx}
+                            style={{
+                              fontWeight: isHighlighted ? "bold" : "normal",
+                            }}
+                          >
+                            {STATION_DISPLAY_NAME[stop] ?? stop}
+                            {idx !== bus.sequence.length - 1 && " → "}
+                          </Text>
+                        );
+                      })}
+                    </Text>
+                  </>
+                )}
 
-                  {/* Leg 1 */}
-                  <View
-                    style={[
-                      styles.routeBar,
-                      { backgroundColor: bus.leg1.color },
-                    ]}
-                  />
-                  <Text style={styles.routeTitle}>
-                    Board Bus Line {bus.leg1.route_number}
-                  </Text>
-                  <Text style={styles.routeStation}>
-                    {bus.leg1.stationsAway} stops from{" "}
-                    {STATION_DISPLAY_NAME[bus.leg1.from as Station] ??
-                      bus.leg1.from}{" "}
-                    to{" "}
-                    {STATION_DISPLAY_NAME[bus.leg1.to as Station] ??
-                      bus.leg1.to}
-                  </Text>
-                  <Text style={{ ...styles.routeStops, paddingBottom: 15 }}>
-                    {bus.leg1.sequence.map((stop: Station, idx: number) => {
-                      const isHighlighted =
-                        stop === bus.leg1.from || stop === bus.leg1.to;
-                      return (
-                        <Text
-                          key={idx}
-                          style={{
-                            fontWeight: isHighlighted ? "bold" : "normal",
-                          }}
-                        >
-                          {STATION_DISPLAY_NAME[stop] ?? stop}
-                          {idx !== bus.leg1.sequence.length - 1 && " → "}
-                        </Text>
-                      );
-                    })}
-                  </Text>
+                {notAvailableSaturday && (
+                  <Text style={styles.warning}>Not available on Saturday</Text>
+                )}
+              </View>
+            );
+          })
+        )}
 
-                  {/* Leg 2 */}
-                  <View
-                    style={[
-                      styles.routeBar,
-                      { backgroundColor: bus.leg2.color },
-                    ]}
-                  />
-                  <Text style={styles.routeTitle}>
-                    Transfer to Bus Line {bus.leg2.route_number}
-                  </Text>
-                  <Text style={styles.routeStation}>
-                    {bus.leg2.stationsAway} stops from{" "}
-                    {STATION_DISPLAY_NAME[bus.leg2.from as Station] ??
-                      bus.leg2.from}{" "}
-                    to{" "}
-                    {STATION_DISPLAY_NAME[bus.leg2.to as Station] ??
-                      bus.leg2.to}
-                  </Text>
-                  <Text style={styles.routeStops}>
-                    {bus.leg2.sequence.map((stop: Station, idx: number) => {
-                      const isHighlighted =
-                        stop === bus.leg2.from || stop === bus.leg2.to;
-                      return (
-                        <Text
-                          key={idx}
-                          style={{
-                            fontWeight: isHighlighted ? "bold" : "normal",
-                          }}
-                        >
-                          {STATION_DISPLAY_NAME[stop] ?? stop}
-                          {idx !== bus.leg2.sequence.length - 1 && " → "}
-                        </Text>
-                      );
-                    })}
-                  </Text>
-                </>
-              ) : (
-                // Direct journey
-                <>
-                  <View
-                    style={[styles.routeBar, { backgroundColor: bus.color }]}
-                  />
-                  <Text style={styles.routeTitle}>
-                    Bus Line {bus.route_number}
-                  </Text>
-                  <Text style={styles.routeStation}>
-                    {bus.stationsAway} stops from{" "}
-                    {STATION_DISPLAY_NAME[bus.from as Station] ?? bus.from} to{" "}
-                    {STATION_DISPLAY_NAME[bus.to as Station] ?? bus.to}
-                  </Text>
-                  <Text style={styles.routeStops}>
-                    {bus.sequence.map((stop: Station, idx: number) => {
-                      const isHighlighted =
-                        stop === bus.from || stop === bus.to;
-                      return (
-                        <Text
-                          key={idx}
-                          style={{
-                            fontWeight: isHighlighted ? "bold" : "normal",
-                          }}
-                        >
-                          {STATION_DISPLAY_NAME[stop] ?? stop}
-                          {idx !== bus.sequence.length - 1 && " → "}
-                        </Text>
-                      );
-                    })}
-                  </Text>
-                </>
-              )}
-
-              {notAvailableSaturday && (
-                <Text style={styles.warning}>Not available on Saturday</Text>
-              )}
-            </View>
-          );
-        })
-      )}
-
-      <View style={{ height: 120 }} />
-    </ScrollView>
+        <View style={{ height: 120 }} />
+      </ScrollView>
+    </>
   );
 }
 

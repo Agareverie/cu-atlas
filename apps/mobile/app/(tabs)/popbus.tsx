@@ -519,6 +519,7 @@ const styles = StyleSheet.create({
     padding: 16,
     marginLeft: 10,
     ...TYPOGRAPHY.body,
+    color: COLORS.muted
   },
 
   suggestion: {
